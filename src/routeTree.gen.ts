@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as KullanicilarRouteImport } from './routes/kullanicilar'
 import { Route as DuyurularRouteImport } from './routes/duyurular'
 import { Route as BankacilikLoglariRouteImport } from './routes/bankacilik-loglari'
@@ -19,6 +20,11 @@ import { Route as DemoTableRouteImport } from './routes/demo/table'
 import { Route as DemoFormSimpleRouteImport } from './routes/demo/form.simple'
 import { Route as DemoFormAddressRouteImport } from './routes/demo/form.address'
 
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const KullanicilarRoute = KullanicilarRouteImport.update({
   id: '/kullanicilar',
   path: '/kullanicilar',
@@ -71,6 +77,7 @@ export interface FileRoutesByFullPath {
   '/bankacilik-loglari': typeof BankacilikLoglariRoute
   '/duyurular': typeof DuyurularRoute
   '/kullanicilar': typeof KullanicilarRoute
+  '/login': typeof LoginRoute
   '/demo/table': typeof DemoTableRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/demo/form/address': typeof DemoFormAddressRoute
@@ -82,6 +89,7 @@ export interface FileRoutesByTo {
   '/bankacilik-loglari': typeof BankacilikLoglariRoute
   '/duyurular': typeof DuyurularRoute
   '/kullanicilar': typeof KullanicilarRoute
+  '/login': typeof LoginRoute
   '/demo/table': typeof DemoTableRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/demo/form/address': typeof DemoFormAddressRoute
@@ -94,6 +102,7 @@ export interface FileRoutesById {
   '/bankacilik-loglari': typeof BankacilikLoglariRoute
   '/duyurular': typeof DuyurularRoute
   '/kullanicilar': typeof KullanicilarRoute
+  '/login': typeof LoginRoute
   '/demo/table': typeof DemoTableRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/demo/form/address': typeof DemoFormAddressRoute
@@ -107,6 +116,7 @@ export interface FileRouteTypes {
     | '/bankacilik-loglari'
     | '/duyurular'
     | '/kullanicilar'
+    | '/login'
     | '/demo/table'
     | '/demo/tanstack-query'
     | '/demo/form/address'
@@ -118,6 +128,7 @@ export interface FileRouteTypes {
     | '/bankacilik-loglari'
     | '/duyurular'
     | '/kullanicilar'
+    | '/login'
     | '/demo/table'
     | '/demo/tanstack-query'
     | '/demo/form/address'
@@ -129,6 +140,7 @@ export interface FileRouteTypes {
     | '/bankacilik-loglari'
     | '/duyurular'
     | '/kullanicilar'
+    | '/login'
     | '/demo/table'
     | '/demo/tanstack-query'
     | '/demo/form/address'
@@ -141,6 +153,7 @@ export interface RootRouteChildren {
   BankacilikLoglariRoute: typeof BankacilikLoglariRoute
   DuyurularRoute: typeof DuyurularRoute
   KullanicilarRoute: typeof KullanicilarRoute
+  LoginRoute: typeof LoginRoute
   DemoTableRoute: typeof DemoTableRoute
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
   DemoFormAddressRoute: typeof DemoFormAddressRoute
@@ -149,6 +162,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/kullanicilar': {
       id: '/kullanicilar'
       path: '/kullanicilar'
@@ -221,6 +241,7 @@ const rootRouteChildren: RootRouteChildren = {
   BankacilikLoglariRoute: BankacilikLoglariRoute,
   DuyurularRoute: DuyurularRoute,
   KullanicilarRoute: KullanicilarRoute,
+  LoginRoute: LoginRoute,
   DemoTableRoute: DemoTableRoute,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
   DemoFormAddressRoute: DemoFormAddressRoute,

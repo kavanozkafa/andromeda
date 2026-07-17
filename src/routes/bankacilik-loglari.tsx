@@ -12,7 +12,8 @@ import {
   Title,
 } from '@mantine/core'
 import { Search } from 'lucide-react'
-import { makeBankacilikLoglari, type BankacilikLog } from '#/data/mock-data'
+import { makeBankacilikLoglari } from '#/data/mock-data'
+import type { BankacilikLog } from '#/data/mock-data'
 
 export const Route = createFileRoute('/bankacilik-loglari')({
   component: BankacilikLoglariPage,

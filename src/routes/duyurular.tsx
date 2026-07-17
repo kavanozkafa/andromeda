@@ -17,7 +17,8 @@ import {
 import { useForm } from '@mantine/form'
 import { notifications } from '@mantine/notifications'
 import { Edit, Plus, Trash } from 'lucide-react'
-import { makeDuyurular, type Duyuru } from '#/data/mock-data'
+import { makeDuyurular } from '#/data/mock-data'
+import type { Duyuru } from '#/data/mock-data'
 
 export const Route = createFileRoute('/duyurular')({
   component: DuyurularPage,

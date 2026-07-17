@@ -84,7 +84,8 @@ src/
 │   ├── Header.tsx           # Header with hamburger menu
 │   ├── Footer.tsx           # Footer component
 │   ├── ThemeToggle.tsx      # Light/Dark theme toggle
-│   └── NavigationDrawer.tsx # Left sidebar navigation drawer
+│   ├── NavigationDrawer.tsx # Left sidebar navigation drawer
+│   └── LinkTree.tsx         # Technology links with icons
 ├── data/            # Mock data and data models
 │   └── mock-data.ts        # Faker-based mock data generators
 ├── hooks/           # Custom React hooks
@@ -109,7 +110,8 @@ pnpm generate-routes  # Generate route tree
 ### Home Page (`/`)
 
 - Landing page with hero section and feature cards
-- Quick start guide and documentation links
+- LinkTree component showing technology stack with icons
+- Quick navigation to application pages
 
 ### Duyurular (`/duyurular`)
 

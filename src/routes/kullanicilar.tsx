@@ -17,7 +17,8 @@ import {
 import { useForm } from '@mantine/form'
 import { notifications } from '@mantine/notifications'
 import { Edit, Search, User } from 'lucide-react'
-import { makeKullanicilar, type Kullanici } from '#/data/mock-data'
+import { makeKullanicilar } from '#/data/mock-data'
+import type { Kullanici } from '#/data/mock-data'
 
 export const Route = createFileRoute('/kullanicilar')({
   component: KullanicilarPage,

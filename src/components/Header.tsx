@@ -1,12 +1,83 @@
 import { useState } from 'react'
 import { Link } from '@tanstack/react-router'
-import { ActionIcon } from '@mantine/core'
-import { Menu } from 'lucide-react'
+import {
+  ActionIcon,
+  Avatar,
+  Badge,
+  Divider,
+  Menu,
+  Modal,
+  PasswordInput,
+  Stack,
+  Text,
+} from '@mantine/core'
+import { useForm } from '@mantine/form'
+import { notifications } from '@mantine/notifications'
+import {
+  Bell,
+  CreditCard,
+  HelpCircle,
+  Leaf,
+  LogOut,
+  Moon,
+  Palette,
+  Shield,
+  Sun,
+  User,
+  Menu as MenuIcon,
+} from 'lucide-react'
 import ThemeToggle from './ThemeToggle'
 import NavigationDrawer from './NavigationDrawer'
+import { useAuth } from '../contexts/AuthContext'
 
 export default function Header() {
   const [drawerOpened, setDrawerOpened] = useState(false)
+  const [passwordModalOpened, setPasswordModalOpened] = useState(false)
+  const [profileModalOpened, setProfileModalOpened] = useState(false)
+  const { user, logout } = useAuth()
+
+  const passwordForm = useForm({
+    initialValues: {
+      currentPassword: '',
+      newPassword: '',
+      confirmPassword: '',
+    },
+    validate: {
+      currentPassword: (value) =>
+        value.length < 1 ? 'Mevcut şifre gerekli' : null,
+      newPassword: (value) =>
+        value.length < 6 ? 'Yeni şifre en az 6 karakter olmalı' : null,
+      confirmPassword: (value, values) =>
+        value !== values.newPassword ? 'Şifreler eşleşmiyor' : null,
+    },
+  })
+
+  const handleLogin = () => {
+    window.location.href = '/login'
+  }
+
+  const handleLogout = () => {
+    logout()
+    window.location.href = '/'
+  }
+
+  const handlePasswordChange = (values: typeof passwordForm.values) => {
+    if (values.currentPassword !== 'admin123') {
+      notifications.show({
+        title: 'Hata',
+        message: 'Mevcut şifre yanlış',
+        color: 'red',
+      })
+      return
+    }
+    notifications.show({
+      title: 'Başarılı',
+      message: 'Şifre başarıyla güncellendi',
+      color: 'green',
+    })
+    setPasswordModalOpened(false)
+    passwordForm.reset()
+  }
 
   return (
     <>
@@ -19,7 +90,7 @@ export default function Header() {
             onClick={() => setDrawerOpened(true)}
             aria-label="Ana menüyü aç"
           >
-            <Menu size={24} />
+            <MenuIcon size={24} />
           </ActionIcon>
 
           <h2 className="m-0 flex-shrink-0 text-base font-semibold tracking-tight">
@@ -27,8 +98,8 @@ export default function Header() {
               to="/"
               className="inline-flex items-center gap-2 rounded-full border border-[var(--chip-line)] bg-[var(--chip-bg)] px-3 py-1.5 text-sm text-[var(--sea-ink)] no-underline shadow-[0_8px_24px_rgba(30,90,72,0.08)] sm:px-4 sm:py-2"
             >
-              <span className="h-2 w-2 rounded-full bg-[linear-gradient(90deg,#56c6be,#7ed3bf)]" />
-              TanStack Start
+              <Leaf size={16} className="text-green-600" />
+              Andromeda
             </Link>
           </h2>
 
@@ -38,14 +109,14 @@ export default function Header() {
               className="nav-link"
               activeProps={{ className: 'nav-link is-active' }}
             >
-              Home
+              Ana Sayfa
             </Link>
             <Link
               to="/about"
               className="nav-link"
               activeProps={{ className: 'nav-link is-active' }}
             >
-              About
+              Hakkında
             </Link>
             <a
               href="https://tanstack.com/start/latest/docs/framework/react/overview"
@@ -53,82 +124,103 @@ export default function Header() {
               target="_blank"
               rel="noreferrer"
             >
-              Docs
+              Dokümantasyon
             </a>
-            <details className="relative w-full sm:w-auto">
-              <summary className="nav-link list-none cursor-pointer">
-                Demos
-              </summary>
-              <div className="mt-2 min-w-56 rounded-xl border border-[var(--line)] bg-[var(--header-bg)] p-2 shadow-lg sm:absolute sm:right-0">
-                <a
-                  href="/demo/form/simple"
-                  className="block rounded-lg px-3 py-2 text-sm text-[var(--sea-ink-soft)] no-underline transition hover:bg-[var(--link-bg-hover)] hover:text-[var(--sea-ink)]"
-                >
-                  Simple Form
-                </a>
-                <a
-                  href="/demo/form/address"
-                  className="block rounded-lg px-3 py-2 text-sm text-[var(--sea-ink-soft)] no-underline transition hover:bg-[var(--link-bg-hover)] hover:text-[var(--sea-ink)]"
-                >
-                  Address Form
-                </a>
-                <a
-                  href="/demo/table"
-                  className="block rounded-lg px-3 py-2 text-sm text-[var(--sea-ink-soft)] no-underline transition hover:bg-[var(--link-bg-hover)] hover:text-[var(--sea-ink)]"
-                >
-                  TanStack Table
-                </a>
-                <a
-                  href="/demo/tanstack-query"
-                  className="block rounded-lg px-3 py-2 text-sm text-[var(--sea-ink-soft)] no-underline transition hover:bg-[var(--link-bg-hover)] hover:text-[var(--sea-ink)]"
-                >
-                  TanStack Query
-                </a>
-              </div>
-            </details>
           </div>
 
           <div className="ml-auto flex items-center gap-1.5 sm:gap-2">
-            <a
-              href="https://x.com/tan_stack"
-              target="_blank"
-              rel="noreferrer"
-              className="hidden rounded-xl p-2 text-[var(--sea-ink-soft)] transition hover:bg-[var(--link-bg-hover)] hover:text-[var(--sea-ink)] sm:block"
-            >
-              <span className="sr-only">Follow TanStack on X</span>
-              <svg
-                viewBox="0 0 16 16"
-                aria-hidden="true"
-                width="24"
-                height="24"
-              >
-                <path
-                  fill="currentColor"
-                  d="M12.6 1h2.2L10 6.48 15.64 15h-4.41L7.78 9.82 3.23 15H1l5.14-5.84L.72 1h4.52l3.12 4.73L12.6 1zm-.77 12.67h1.22L4.57 2.26H3.26l8.57 11.41z"
-                />
-              </svg>
-            </a>
-            <a
-              href="https://github.com/TanStack"
-              target="_blank"
-              rel="noreferrer"
-              className="hidden rounded-xl p-2 text-[var(--sea-ink-soft)] transition hover:bg-[var(--link-bg-hover)] hover:text-[var(--sea-ink)] sm:block"
-            >
-              <span className="sr-only">Go to TanStack GitHub</span>
-              <svg
-                viewBox="0 0 16 16"
-                aria-hidden="true"
-                width="24"
-                height="24"
-              >
-                <path
-                  fill="currentColor"
-                  d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"
-                />
-              </svg>
-            </a>
-
             <ThemeToggle />
+
+            <Menu shadow="md" width={260}>
+              <Menu.Target>
+                <ActionIcon
+                  variant="subtle"
+                  color="gray"
+                  size="lg"
+                  aria-label="Profil"
+                >
+                  <Avatar size="sm" radius="xl" color="green">
+                    {user ? user.username.charAt(0).toUpperCase() : 'G'}
+                  </Avatar>
+                </ActionIcon>
+              </Menu.Target>
+
+              <Menu.Dropdown>
+                {user ? (
+                  <>
+                    <Menu.Label>
+                      <div className="flex items-center gap-2">
+                        <Avatar size="md" radius="xl" color="green">
+                          {user.username.charAt(0).toUpperCase()}
+                        </Avatar>
+                        <div>
+                          <Text size="sm" fw={600}>
+                            {user.username}
+                          </Text>
+                          <Text size="xs" c="dimmed">
+                            {user.email}
+                          </Text>
+                        </div>
+                      </div>
+                    </Menu.Label>
+                    <Divider />
+                    <Menu.Item
+                      leftSection={<User size={14} />}
+                      onClick={() => setProfileModalOpened(true)}
+                    >
+                      Profilim
+                    </Menu.Item>
+                    <Menu.Item
+                      leftSection={<Shield size={14} />}
+                      onClick={() => setPasswordModalOpened(true)}
+                    >
+                      Şifre Değiştir
+                    </Menu.Item>
+                    <Menu.Item leftSection={<Bell size={14} />}>
+                      Bildirimler
+                      <Badge size="xs" color="green" ml="auto">
+                        3
+                      </Badge>
+                    </Menu.Item>
+                    <Menu.Item leftSection={<CreditCard size={14} />}>
+                      Ödeme Yöntemleri
+                    </Menu.Item>
+                    <Menu.Divider />
+                    <Menu.Label> Görünüm</Menu.Label>
+                    <Menu.Item leftSection={<Palette size={14} />}>
+                      Tema Değiştir
+                    </Menu.Item>
+                    <Menu.Item leftSection={<Sun size={14} />}>
+                      Açık Tema
+                    </Menu.Item>
+                    <Menu.Item leftSection={<Moon size={14} />}>
+                      Koyu Tema
+                    </Menu.Item>
+                    <Menu.Divider />
+                    <Menu.Item leftSection={<HelpCircle size={14} />}>
+                      Yardım
+                    </Menu.Item>
+                    <Menu.Item
+                      leftSection={<LogOut size={14} />}
+                      color="red"
+                      onClick={handleLogout}
+                    >
+                      Çıkış Yap
+                    </Menu.Item>
+                  </>
+                ) : (
+                  <>
+                    <Menu.Label>Henüz giriş yapmadınız</Menu.Label>
+                    <Menu.Item
+                      leftSection={<User size={14} />}
+                      onClick={handleLogin}
+                    >
+                      Giriş Yap
+                    </Menu.Item>
+                  </>
+                )}
+              </Menu.Dropdown>
+            </Menu>
           </div>
         </nav>
       </header>
@@ -137,6 +229,112 @@ export default function Header() {
         opened={drawerOpened}
         onClose={() => setDrawerOpened(false)}
       />
+
+      <Modal
+        opened={passwordModalOpened}
+        onClose={() => setPasswordModalOpened(false)}
+        title="Şifre Değiştir"
+        centered
+      >
+        <form onSubmit={passwordForm.onSubmit(handlePasswordChange)}>
+          <Stack gap="md">
+            <PasswordInput
+              label="Mevcut Şifre"
+              placeholder="Mevcut şifrenizi girin"
+              {...passwordForm.getInputProps('currentPassword')}
+            />
+            <PasswordInput
+              label="Yeni Şifre"
+              placeholder="Yeni şifrenizi girin"
+              {...passwordForm.getInputProps('newPassword')}
+            />
+            <PasswordInput
+              label="Şifre Tekrar"
+              placeholder="Yeni şifrenizi tekrar girin"
+              {...passwordForm.getInputProps('confirmPassword')}
+            />
+            <Stack gap="xs">
+              <Text size="xs" c="dimmed">
+                • En az 6 karakter
+              </Text>
+              <Text size="xs" c="dimmed">
+                • En az bir harf ve bir rakam içermeli
+              </Text>
+            </Stack>
+            <Stack gap="sm">
+              <button
+                type="submit"
+                className="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-green-700"
+              >
+                Şifreyi Güncelle
+              </button>
+              <button
+                type="button"
+                onClick={() => setPasswordModalOpened(false)}
+                className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
+              >
+                İptal
+              </button>
+            </Stack>
+          </Stack>
+        </form>
+      </Modal>
+
+      <Modal
+        opened={profileModalOpened}
+        onClose={() => setProfileModalOpened(false)}
+        title="Profil Bilgileri"
+        centered
+      >
+        <Stack gap="md">
+          <div className="flex items-center gap-4">
+            <Avatar size="xl" radius="xl" color="green">
+              {user?.username.charAt(0).toUpperCase()}
+            </Avatar>
+            <div>
+              <Text fw={600} size="lg">
+                {user?.username}
+              </Text>
+              <Text c="dimmed" size="sm">
+                {user?.email}
+              </Text>
+            </div>
+          </div>
+          <Divider />
+          <Stack gap="sm">
+            <div className="flex items-center justify-between">
+              <Text size="sm">Kullanıcı Adı:</Text>
+              <Text size="sm" fw={500}>
+                {user?.username}
+              </Text>
+            </div>
+            <div className="flex items-center justify-between">
+              <Text size="sm">E-posta:</Text>
+              <Text size="sm" fw={500}>
+                {user?.email}
+              </Text>
+            </div>
+            <div className="flex items-center justify-between">
+              <Text size="sm">Rol:</Text>
+              <Badge color="green" variant="light">
+                {user?.role}
+              </Badge>
+            </div>
+            <div className="flex items-center justify-between">
+              <Text size="sm">Durum:</Text>
+              <Badge color="green" variant="light">
+                Aktif
+              </Badge>
+            </div>
+          </Stack>
+          <button
+            onClick={() => setProfileModalOpened(false)}
+            className="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-green-700"
+          >
+            Kapat
+          </button>
+        </Stack>
+      </Modal>
     </>
   )
 }
