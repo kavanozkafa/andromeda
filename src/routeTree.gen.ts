@@ -9,6 +9,9 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as KullanicilarRouteImport } from './routes/kullanicilar'
+import { Route as DuyurularRouteImport } from './routes/duyurular'
+import { Route as BankacilikLoglariRouteImport } from './routes/bankacilik-loglari'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
@@ -16,6 +19,21 @@ import { Route as DemoTableRouteImport } from './routes/demo/table'
 import { Route as DemoFormSimpleRouteImport } from './routes/demo/form.simple'
 import { Route as DemoFormAddressRouteImport } from './routes/demo/form.address'
 
+const KullanicilarRoute = KullanicilarRouteImport.update({
+  id: '/kullanicilar',
+  path: '/kullanicilar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DuyurularRoute = DuyurularRouteImport.update({
+  id: '/duyurular',
+  path: '/duyurular',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BankacilikLoglariRoute = BankacilikLoglariRouteImport.update({
+  id: '/bankacilik-loglari',
+  path: '/bankacilik-loglari',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -50,6 +68,9 @@ const DemoFormAddressRoute = DemoFormAddressRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/bankacilik-loglari': typeof BankacilikLoglariRoute
+  '/duyurular': typeof DuyurularRoute
+  '/kullanicilar': typeof KullanicilarRoute
   '/demo/table': typeof DemoTableRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/demo/form/address': typeof DemoFormAddressRoute
@@ -58,6 +79,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/bankacilik-loglari': typeof BankacilikLoglariRoute
+  '/duyurular': typeof DuyurularRoute
+  '/kullanicilar': typeof KullanicilarRoute
   '/demo/table': typeof DemoTableRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/demo/form/address': typeof DemoFormAddressRoute
@@ -67,6 +91,9 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/bankacilik-loglari': typeof BankacilikLoglariRoute
+  '/duyurular': typeof DuyurularRoute
+  '/kullanicilar': typeof KullanicilarRoute
   '/demo/table': typeof DemoTableRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/demo/form/address': typeof DemoFormAddressRoute
@@ -77,6 +104,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/bankacilik-loglari'
+    | '/duyurular'
+    | '/kullanicilar'
     | '/demo/table'
     | '/demo/tanstack-query'
     | '/demo/form/address'
@@ -85,6 +115,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/bankacilik-loglari'
+    | '/duyurular'
+    | '/kullanicilar'
     | '/demo/table'
     | '/demo/tanstack-query'
     | '/demo/form/address'
@@ -93,6 +126,9 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/bankacilik-loglari'
+    | '/duyurular'
+    | '/kullanicilar'
     | '/demo/table'
     | '/demo/tanstack-query'
     | '/demo/form/address'
@@ -102,6 +138,9 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  BankacilikLoglariRoute: typeof BankacilikLoglariRoute
+  DuyurularRoute: typeof DuyurularRoute
+  KullanicilarRoute: typeof KullanicilarRoute
   DemoTableRoute: typeof DemoTableRoute
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
   DemoFormAddressRoute: typeof DemoFormAddressRoute
@@ -110,6 +149,27 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/kullanicilar': {
+      id: '/kullanicilar'
+      path: '/kullanicilar'
+      fullPath: '/kullanicilar'
+      preLoaderRoute: typeof KullanicilarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/duyurular': {
+      id: '/duyurular'
+      path: '/duyurular'
+      fullPath: '/duyurular'
+      preLoaderRoute: typeof DuyurularRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bankacilik-loglari': {
+      id: '/bankacilik-loglari'
+      path: '/bankacilik-loglari'
+      fullPath: '/bankacilik-loglari'
+      preLoaderRoute: typeof BankacilikLoglariRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -158,6 +218,9 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  BankacilikLoglariRoute: BankacilikLoglariRoute,
+  DuyurularRoute: DuyurularRoute,
+  KullanicilarRoute: KullanicilarRoute,
   DemoTableRoute: DemoTableRoute,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
   DemoFormAddressRoute: DemoFormAddressRoute,

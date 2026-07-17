@@ -16,7 +16,14 @@
     "check": "prettier --check ."
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/server": "^11.11.0",
     "@faker-js/faker": "^10.3.0",
+    "@mantine/core": "^9.4.1",
+    "@mantine/form": "^9.4.1",
+    "@mantine/hooks": "^9.4.1",
+    "@mantine/modals": "^9.4.1",
+    "@mantine/notifications": "^9.4.1",
     "@tailwindcss/vite": "^4.1.18",
     "@tanstack/match-sorter-utils": "latest",
     "@tanstack/react-devtools": "latest",
@@ -30,6 +37,7 @@
     "@tanstack/react-table": "latest",
     "@tanstack/router-plugin": "^1.132.0",
     "lucide-react": "^0.545.0",
+    "mantine-datatable": "^9.4.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "tailwindcss": "^4.1.18",

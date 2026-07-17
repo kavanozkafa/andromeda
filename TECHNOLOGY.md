@@ -35,6 +35,13 @@ This is a modern full-stack React application built with TanStack Start (SSR fra
 
 ### UI Components
 
+- **Mantine UI** - Full-featured React component library (v9)
+  - @mantine/core - Core UI components (Button, Modal, Table, etc.)
+  - @mantine/hooks - Custom React hooks
+  - @mantine/form - Form state management with validation
+  - @mantine/modals - Modal management
+  - @mantine/notifications - Toast notifications
+- **Emotion** - CSS-in-JS library (Mantine dependency)
 - **Lucide React** - Icon library
 
 ### Testing
@@ -66,10 +73,24 @@ This is a modern full-stack React application built with TanStack Start (SSR fra
 ```
 src/
 ├── routes/          # File-based routing (TanStack Router)
+│   ├── __root.tsx           # Root layout with MantineProvider
+│   ├── index.tsx            # Home page
+│   ├── about.tsx            # About page
+│   ├── duyurular.tsx        # Announcements CRUD page
+│   ├── kullanicilar.tsx     # User management page
+│   ├── bankacilik-loglari.tsx # Banking logs data grid
+│   └── demo/               # Demo pages
 ├── components/      # Reusable UI components
+│   ├── Header.tsx           # Header with hamburger menu
+│   ├── Footer.tsx           # Footer component
+│   ├── ThemeToggle.tsx      # Light/Dark theme toggle
+│   └── NavigationDrawer.tsx # Left sidebar navigation drawer
+├── data/            # Mock data and data models
+│   └── mock-data.ts        # Faker-based mock data generators
 ├── hooks/           # Custom React hooks
-├── utils/           # Utility functions
-└── styles/          # TailwindCSS configuration
+├── integrations/    # Third-party integrations
+│   └── tanstack-query/     # TanStack Query setup
+└── styles.css       # Global styles and TailwindCSS
 ```
 
 ## Development Commands
@@ -83,6 +104,41 @@ pnpm format       # Format code with Prettier
 pnpm generate-routes  # Generate route tree
 ```
 
+## Application Pages
+
+### Home Page (`/`)
+
+- Landing page with hero section and feature cards
+- Quick start guide and documentation links
+
+### Duyurular (`/duyurular`)
+
+- Announcements management with CRUD operations
+- Add new announcements via modal form
+- Edit existing announcements
+- Delete with confirmation dialog
+- Status badges (aktif/pasif/taslak)
+
+### Kullanıcı İşlemleri (`/kullanicilar`)
+
+- Customer information management
+- Search functionality by name, email, or account number
+- Edit customer details via modal form
+- Display bakiye (balance) in Turkish Lira
+
+### Dijital Bankacılık Logları (`/bankacilik-loglari`)
+
+- Data grid with 50 mock banking transactions
+- Columns: Müşteri Adı, İşlem Tipi, Tutar, Tarih, Durum, IP Adresi, Cihaz, Konum, Referans No
+- Searchable by customer name, reference number, or transaction type
+- Pagination with 10 records per page
+- Color-coded badges for transaction types and status
+
+### Navigation
+
+- Hamburger menu (left drawer) accessible from header
+- Links to all application pages
+
 ## AI Assistant Guidelines
 
 ### When Working With This Project:
@@ -95,6 +151,11 @@ pnpm generate-routes  # Generate route tree
 6. **Styling** - Use TailwindCSS utility classes, maintain consistent design tokens
 7. **Testing** - Write tests with Vitest + React Testing Library, follow existing test patterns
 8. **Performance** - Use React.memo, useMemo, useCallback appropriately, leverage concurrent features
+9. **Mantine UI** - Use Mantine components for forms, modals, tables, and UI elements
+   - Import from `@mantine/core` for UI components
+   - Use `@mantine/form` for form state management
+   - Use `@mantine/notifications` for toast messages
+   - Follow green/white color theme (primaryColor: 'green')
 
 ### Code Conventions:
 
@@ -103,3 +164,6 @@ pnpm generate-routes  # Generate route tree
 - Follow existing naming conventions in the codebase
 - Use Zod schemas for form validation and API contracts
 - Implement proper error boundaries and loading states
+- Use Mantine's `useForm` hook for form management
+- Use Mantine's `notifications` for user feedback
+- Keep components in src/components/ reusable across pages
