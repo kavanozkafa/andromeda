@@ -16,6 +16,8 @@ import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
 import appCss from '../styles.css?url'
 import '@mantine/core/styles.css'
 import '@mantine/notifications/styles.css'
+import '@mantine/charts/styles.css'
+import '@mantine/dates/styles.css'
 
 import type { QueryClient } from '@tanstack/react-query'
 

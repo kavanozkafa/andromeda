@@ -1,5 +1,16 @@
 import { Drawer, NavLink, Stack, Text, ThemeIcon } from '@mantine/core'
-import { Bell, ExternalLink, FileCode, Leaf, Users } from 'lucide-react'
+import {
+  Bell,
+  CreditCard,
+  ExternalLink,
+  FileCode,
+  FileText,
+  History,
+  LayoutDashboard,
+  Leaf,
+  Settings,
+  Users,
+} from 'lucide-react'
 
 interface NavigationDrawerProps {
   opened: boolean
@@ -52,6 +63,28 @@ export default function NavigationDrawer({
     >
       <Stack gap="xs">
         <NavLink
+          label="Dashboard"
+          description="Genel durum ve analitikler"
+          leftSection={
+            <ThemeIcon variant="light" color="green" size="lg">
+              <LayoutDashboard size={20} />
+            </ThemeIcon>
+          }
+          onClick={() => handleNavigate('/dashboard')}
+          variant="subtle"
+        />
+        <NavLink
+          label="İşlemler"
+          description="İşlem geçmişi ve filtreleme"
+          leftSection={
+            <ThemeIcon variant="light" color="green" size="lg">
+              <History size={20} />
+            </ThemeIcon>
+          }
+          onClick={() => handleNavigate('/islemler')}
+          variant="subtle"
+        />
+        <NavLink
           label="Duyurular"
           description="Duyuru listesi, ekleme, silme, güncelleme"
           leftSection={
@@ -82,6 +115,39 @@ export default function NavigationDrawer({
             </ThemeIcon>
           }
           onClick={() => handleNavigate('/bankacilik-loglari')}
+          variant="subtle"
+        />
+        <NavLink
+          label="Kartlarım"
+          description="Kredi ve banka kartları yönetimi"
+          leftSection={
+            <ThemeIcon variant="light" color="green" size="lg">
+              <CreditCard size={20} />
+            </ThemeIcon>
+          }
+          onClick={() => handleNavigate('/kartlar')}
+          variant="subtle"
+        />
+        <NavLink
+          label="Ayarlar"
+          description="Hesap ve bildirim ayarları"
+          leftSection={
+            <ThemeIcon variant="light" color="green" size="lg">
+              <Settings size={20} />
+            </ThemeIcon>
+          }
+          onClick={() => handleNavigate('/ayarlar')}
+          variant="subtle"
+        />
+        <NavLink
+          label="Raporlar"
+          description="Raporları oluşturun ve dışa aktarın"
+          leftSection={
+            <ThemeIcon variant="light" color="green" size="lg">
+              <FileText size={20} />
+            </ThemeIcon>
+          }
+          onClick={() => handleNavigate('/raporlar')}
           variant="subtle"
         />
       </Stack>

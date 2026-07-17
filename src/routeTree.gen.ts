@@ -9,10 +9,15 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as RaporlarRouteImport } from './routes/raporlar'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as KullanicilarRouteImport } from './routes/kullanicilar'
+import { Route as KartlarRouteImport } from './routes/kartlar'
+import { Route as IslemlerRouteImport } from './routes/islemler'
 import { Route as DuyurularRouteImport } from './routes/duyurular'
+import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as BankacilikLoglariRouteImport } from './routes/bankacilik-loglari'
+import { Route as AyarlarRouteImport } from './routes/ayarlar'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
@@ -20,6 +25,11 @@ import { Route as DemoTableRouteImport } from './routes/demo/table'
 import { Route as DemoFormSimpleRouteImport } from './routes/demo/form.simple'
 import { Route as DemoFormAddressRouteImport } from './routes/demo/form.address'
 
+const RaporlarRoute = RaporlarRouteImport.update({
+  id: '/raporlar',
+  path: '/raporlar',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -30,14 +40,34 @@ const KullanicilarRoute = KullanicilarRouteImport.update({
   path: '/kullanicilar',
   getParentRoute: () => rootRouteImport,
 } as any)
+const KartlarRoute = KartlarRouteImport.update({
+  id: '/kartlar',
+  path: '/kartlar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IslemlerRoute = IslemlerRouteImport.update({
+  id: '/islemler',
+  path: '/islemler',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DuyurularRoute = DuyurularRouteImport.update({
   id: '/duyurular',
   path: '/duyurular',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BankacilikLoglariRoute = BankacilikLoglariRouteImport.update({
   id: '/bankacilik-loglari',
   path: '/bankacilik-loglari',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AyarlarRoute = AyarlarRouteImport.update({
+  id: '/ayarlar',
+  path: '/ayarlar',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -74,10 +104,15 @@ const DemoFormAddressRoute = DemoFormAddressRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/ayarlar': typeof AyarlarRoute
   '/bankacilik-loglari': typeof BankacilikLoglariRoute
+  '/dashboard': typeof DashboardRoute
   '/duyurular': typeof DuyurularRoute
+  '/islemler': typeof IslemlerRoute
+  '/kartlar': typeof KartlarRoute
   '/kullanicilar': typeof KullanicilarRoute
   '/login': typeof LoginRoute
+  '/raporlar': typeof RaporlarRoute
   '/demo/table': typeof DemoTableRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/demo/form/address': typeof DemoFormAddressRoute
@@ -86,10 +121,15 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/ayarlar': typeof AyarlarRoute
   '/bankacilik-loglari': typeof BankacilikLoglariRoute
+  '/dashboard': typeof DashboardRoute
   '/duyurular': typeof DuyurularRoute
+  '/islemler': typeof IslemlerRoute
+  '/kartlar': typeof KartlarRoute
   '/kullanicilar': typeof KullanicilarRoute
   '/login': typeof LoginRoute
+  '/raporlar': typeof RaporlarRoute
   '/demo/table': typeof DemoTableRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/demo/form/address': typeof DemoFormAddressRoute
@@ -99,10 +139,15 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/ayarlar': typeof AyarlarRoute
   '/bankacilik-loglari': typeof BankacilikLoglariRoute
+  '/dashboard': typeof DashboardRoute
   '/duyurular': typeof DuyurularRoute
+  '/islemler': typeof IslemlerRoute
+  '/kartlar': typeof KartlarRoute
   '/kullanicilar': typeof KullanicilarRoute
   '/login': typeof LoginRoute
+  '/raporlar': typeof RaporlarRoute
   '/demo/table': typeof DemoTableRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/demo/form/address': typeof DemoFormAddressRoute
@@ -113,10 +158,15 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/ayarlar'
     | '/bankacilik-loglari'
+    | '/dashboard'
     | '/duyurular'
+    | '/islemler'
+    | '/kartlar'
     | '/kullanicilar'
     | '/login'
+    | '/raporlar'
     | '/demo/table'
     | '/demo/tanstack-query'
     | '/demo/form/address'
@@ -125,10 +175,15 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/ayarlar'
     | '/bankacilik-loglari'
+    | '/dashboard'
     | '/duyurular'
+    | '/islemler'
+    | '/kartlar'
     | '/kullanicilar'
     | '/login'
+    | '/raporlar'
     | '/demo/table'
     | '/demo/tanstack-query'
     | '/demo/form/address'
@@ -137,10 +192,15 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/ayarlar'
     | '/bankacilik-loglari'
+    | '/dashboard'
     | '/duyurular'
+    | '/islemler'
+    | '/kartlar'
     | '/kullanicilar'
     | '/login'
+    | '/raporlar'
     | '/demo/table'
     | '/demo/tanstack-query'
     | '/demo/form/address'
@@ -150,10 +210,15 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AyarlarRoute: typeof AyarlarRoute
   BankacilikLoglariRoute: typeof BankacilikLoglariRoute
+  DashboardRoute: typeof DashboardRoute
   DuyurularRoute: typeof DuyurularRoute
+  IslemlerRoute: typeof IslemlerRoute
+  KartlarRoute: typeof KartlarRoute
   KullanicilarRoute: typeof KullanicilarRoute
   LoginRoute: typeof LoginRoute
+  RaporlarRoute: typeof RaporlarRoute
   DemoTableRoute: typeof DemoTableRoute
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
   DemoFormAddressRoute: typeof DemoFormAddressRoute
@@ -162,6 +227,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/raporlar': {
+      id: '/raporlar'
+      path: '/raporlar'
+      fullPath: '/raporlar'
+      preLoaderRoute: typeof RaporlarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -176,6 +248,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof KullanicilarRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/kartlar': {
+      id: '/kartlar'
+      path: '/kartlar'
+      fullPath: '/kartlar'
+      preLoaderRoute: typeof KartlarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/islemler': {
+      id: '/islemler'
+      path: '/islemler'
+      fullPath: '/islemler'
+      preLoaderRoute: typeof IslemlerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/duyurular': {
       id: '/duyurular'
       path: '/duyurular'
@@ -183,11 +269,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DuyurularRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/bankacilik-loglari': {
       id: '/bankacilik-loglari'
       path: '/bankacilik-loglari'
       fullPath: '/bankacilik-loglari'
       preLoaderRoute: typeof BankacilikLoglariRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ayarlar': {
+      id: '/ayarlar'
+      path: '/ayarlar'
+      fullPath: '/ayarlar'
+      preLoaderRoute: typeof AyarlarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -238,10 +338,15 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AyarlarRoute: AyarlarRoute,
   BankacilikLoglariRoute: BankacilikLoglariRoute,
+  DashboardRoute: DashboardRoute,
   DuyurularRoute: DuyurularRoute,
+  IslemlerRoute: IslemlerRoute,
+  KartlarRoute: KartlarRoute,
   KullanicilarRoute: KullanicilarRoute,
   LoginRoute: LoginRoute,
+  RaporlarRoute: RaporlarRoute,
   DemoTableRoute: DemoTableRoute,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
   DemoFormAddressRoute: DemoFormAddressRoute,
