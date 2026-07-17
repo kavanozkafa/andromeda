@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from '@tanstack/react-router'
 import {
   ActionIcon,
@@ -15,7 +15,6 @@ import { useForm } from '@mantine/form'
 import { notifications } from '@mantine/notifications'
 import {
   Bell,
-  CreditCard,
   HelpCircle,
   Leaf,
   LogOut,
@@ -26,6 +25,7 @@ import {
   User,
   Menu as MenuIcon,
 } from 'lucide-react'
+import { Clock } from 'lucide-react'
 import ThemeToggle from './ThemeToggle'
 import NavigationDrawer from './NavigationDrawer'
 import { useAuth } from '../contexts/AuthContext'
@@ -35,6 +35,27 @@ export default function Header() {
   const [passwordModalOpened, setPasswordModalOpened] = useState(false)
   const [profileModalOpened, setProfileModalOpened] = useState(false)
   const { user, logout } = useAuth()
+  const [saat, setSaat] = useState('')
+
+  useEffect(() => {
+    const guncelle = () => {
+      const now = new Date()
+      const tarih = now.toLocaleDateString('tr-TR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+      })
+      const zaman = now.toLocaleTimeString('tr-TR', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+      })
+      setSaat(`${tarih} ${zaman}`)
+    }
+    guncelle()
+    const interval = setInterval(guncelle, 1000)
+    return () => clearInterval(interval)
+  }, [])
 
   const passwordForm = useForm({
     initialValues: {
@@ -58,7 +79,7 @@ export default function Header() {
 
   const handleLogout = () => {
     logout()
-    window.location.href = '/'
+    window.location.href = '/login'
   }
 
   const handlePasswordChange = (values: typeof passwordForm.values) => {
@@ -103,33 +124,11 @@ export default function Header() {
             </Link>
           </h2>
 
-          <div className="order-3 flex w-full flex-wrap items-center gap-x-4 gap-y-1 pb-1 text-sm font-semibold sm:order-none sm:w-auto sm:flex-nowrap sm:pb-0">
-            <Link
-              to="/"
-              className="nav-link"
-              activeProps={{ className: 'nav-link is-active' }}
-            >
-              Ana Sayfa
-            </Link>
-            <Link
-              to="/about"
-              className="nav-link"
-              activeProps={{ className: 'nav-link is-active' }}
-            >
-              Hakkında
-            </Link>
-            <a
-              href="https://tanstack.com/start/latest/docs/framework/react/overview"
-              className="nav-link"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Dokümantasyon
-            </a>
-          </div>
-
           <div className="ml-auto flex items-center gap-1.5 sm:gap-2">
-            <ThemeToggle />
+            <div className="flex items-center gap-1.5 rounded-lg border border-[var(--line)] bg-[var(--header-bg)] px-2.5 py-1 text-sm font-medium tabular-nums">
+              <Clock size={14} className="text-green-600" />
+              <span>{saat}</span>
+            </div>
 
             <Menu shadow="md" width={260}>
               <Menu.Target>
@@ -182,13 +181,10 @@ export default function Header() {
                         3
                       </Badge>
                     </Menu.Item>
-                    <Menu.Item leftSection={<CreditCard size={14} />}>
-                      Ödeme Yöntemleri
-                    </Menu.Item>
                     <Menu.Divider />
                     <Menu.Label> Görünüm</Menu.Label>
                     <Menu.Item leftSection={<Palette size={14} />}>
-                      Tema Değiştir
+                      <ThemeToggle />
                     </Menu.Item>
                     <Menu.Item leftSection={<Sun size={14} />}>
                       Açık Tema

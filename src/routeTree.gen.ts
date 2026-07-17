@@ -12,13 +12,13 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as RaporlarRouteImport } from './routes/raporlar'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as KullanicilarRouteImport } from './routes/kullanicilar'
+import { Route as KisayollarRouteImport } from './routes/kisayollar'
 import { Route as KartlarRouteImport } from './routes/kartlar'
 import { Route as IslemlerRouteImport } from './routes/islemler'
 import { Route as DuyurularRouteImport } from './routes/duyurular'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as BankacilikLoglariRouteImport } from './routes/bankacilik-loglari'
 import { Route as AyarlarRouteImport } from './routes/ayarlar'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
 import { Route as DemoTableRouteImport } from './routes/demo/table'
@@ -38,6 +38,11 @@ const LoginRoute = LoginRouteImport.update({
 const KullanicilarRoute = KullanicilarRouteImport.update({
   id: '/kullanicilar',
   path: '/kullanicilar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KisayollarRoute = KisayollarRouteImport.update({
+  id: '/kisayollar',
+  path: '/kisayollar',
   getParentRoute: () => rootRouteImport,
 } as any)
 const KartlarRoute = KartlarRouteImport.update({
@@ -70,11 +75,6 @@ const AyarlarRoute = AyarlarRouteImport.update({
   path: '/ayarlar',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -103,13 +103,13 @@ const DemoFormAddressRoute = DemoFormAddressRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/ayarlar': typeof AyarlarRoute
   '/bankacilik-loglari': typeof BankacilikLoglariRoute
   '/dashboard': typeof DashboardRoute
   '/duyurular': typeof DuyurularRoute
   '/islemler': typeof IslemlerRoute
   '/kartlar': typeof KartlarRoute
+  '/kisayollar': typeof KisayollarRoute
   '/kullanicilar': typeof KullanicilarRoute
   '/login': typeof LoginRoute
   '/raporlar': typeof RaporlarRoute
@@ -120,13 +120,13 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/ayarlar': typeof AyarlarRoute
   '/bankacilik-loglari': typeof BankacilikLoglariRoute
   '/dashboard': typeof DashboardRoute
   '/duyurular': typeof DuyurularRoute
   '/islemler': typeof IslemlerRoute
   '/kartlar': typeof KartlarRoute
+  '/kisayollar': typeof KisayollarRoute
   '/kullanicilar': typeof KullanicilarRoute
   '/login': typeof LoginRoute
   '/raporlar': typeof RaporlarRoute
@@ -138,13 +138,13 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/ayarlar': typeof AyarlarRoute
   '/bankacilik-loglari': typeof BankacilikLoglariRoute
   '/dashboard': typeof DashboardRoute
   '/duyurular': typeof DuyurularRoute
   '/islemler': typeof IslemlerRoute
   '/kartlar': typeof KartlarRoute
+  '/kisayollar': typeof KisayollarRoute
   '/kullanicilar': typeof KullanicilarRoute
   '/login': typeof LoginRoute
   '/raporlar': typeof RaporlarRoute
@@ -157,13 +157,13 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/about'
     | '/ayarlar'
     | '/bankacilik-loglari'
     | '/dashboard'
     | '/duyurular'
     | '/islemler'
     | '/kartlar'
+    | '/kisayollar'
     | '/kullanicilar'
     | '/login'
     | '/raporlar'
@@ -174,13 +174,13 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/about'
     | '/ayarlar'
     | '/bankacilik-loglari'
     | '/dashboard'
     | '/duyurular'
     | '/islemler'
     | '/kartlar'
+    | '/kisayollar'
     | '/kullanicilar'
     | '/login'
     | '/raporlar'
@@ -191,13 +191,13 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/about'
     | '/ayarlar'
     | '/bankacilik-loglari'
     | '/dashboard'
     | '/duyurular'
     | '/islemler'
     | '/kartlar'
+    | '/kisayollar'
     | '/kullanicilar'
     | '/login'
     | '/raporlar'
@@ -209,13 +209,13 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
   AyarlarRoute: typeof AyarlarRoute
   BankacilikLoglariRoute: typeof BankacilikLoglariRoute
   DashboardRoute: typeof DashboardRoute
   DuyurularRoute: typeof DuyurularRoute
   IslemlerRoute: typeof IslemlerRoute
   KartlarRoute: typeof KartlarRoute
+  KisayollarRoute: typeof KisayollarRoute
   KullanicilarRoute: typeof KullanicilarRoute
   LoginRoute: typeof LoginRoute
   RaporlarRoute: typeof RaporlarRoute
@@ -246,6 +246,13 @@ declare module '@tanstack/react-router' {
       path: '/kullanicilar'
       fullPath: '/kullanicilar'
       preLoaderRoute: typeof KullanicilarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kisayollar': {
+      id: '/kisayollar'
+      path: '/kisayollar'
+      fullPath: '/kisayollar'
+      preLoaderRoute: typeof KisayollarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/kartlar': {
@@ -290,13 +297,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AyarlarRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -337,13 +337,13 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
   AyarlarRoute: AyarlarRoute,
   BankacilikLoglariRoute: BankacilikLoglariRoute,
   DashboardRoute: DashboardRoute,
   DuyurularRoute: DuyurularRoute,
   IslemlerRoute: IslemlerRoute,
   KartlarRoute: KartlarRoute,
+  KisayollarRoute: KisayollarRoute,
   KullanicilarRoute: KullanicilarRoute,
   LoginRoute: LoginRoute,
   RaporlarRoute: RaporlarRoute,

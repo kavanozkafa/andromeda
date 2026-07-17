@@ -2,13 +2,13 @@ import { Drawer, NavLink, Stack, Text, ThemeIcon } from '@mantine/core'
 import {
   Bell,
   CreditCard,
-  ExternalLink,
   FileCode,
   FileText,
   History,
   LayoutDashboard,
   Leaf,
   Settings,
+  Sparkles,
   Users,
 } from 'lucide-react'
 
@@ -16,22 +16,6 @@ interface NavigationDrawerProps {
   opened: boolean
   onClose: () => void
 }
-
-const technologies = [
-  { name: 'React', url: 'https://react.dev', color: '#61DAFB' },
-  {
-    name: 'TypeScript',
-    url: 'https://www.typescriptlang.org',
-    color: '#3178C6',
-  },
-  { name: 'Vite', url: 'https://vitejs.dev', color: '#646CFF' },
-  { name: 'TanStack', url: 'https://tanstack.com', color: '#EF4444' },
-  { name: 'Mantine', url: 'https://mantine.dev', color: '#339AF0' },
-  { name: 'Tailwind CSS', url: 'https://tailwindcss.com', color: '#06B6D4' },
-  { name: 'Vitest', url: 'https://vitest.dev', color: '#729B1B' },
-  { name: 'ESLint', url: 'https://eslint.org', color: '#4B32C3' },
-  { name: 'Zod', url: 'https://zod.dev', color: '#3068B7' },
-]
 
 export default function NavigationDrawer({
   opened,
@@ -47,7 +31,7 @@ export default function NavigationDrawer({
       opened={opened}
       onClose={onClose}
       title={
-        <div className="flex items-center gap-2">
+        <div className="flex items-center justify-center gap-2">
           <Leaf size={20} className="text-green-600" />
           <span>Ana Menü</span>
         </div>
@@ -58,10 +42,12 @@ export default function NavigationDrawer({
         title: {
           fontWeight: 700,
           fontSize: '1.2rem',
+          justifyContent: 'center',
+          width: '100%',
         },
       }}
     >
-      <Stack gap="xs">
+      <Stack gap="xs" align="center">
         <NavLink
           label="Dashboard"
           description="Genel durum ve analitikler"
@@ -72,6 +58,8 @@ export default function NavigationDrawer({
           }
           onClick={() => handleNavigate('/dashboard')}
           variant="subtle"
+          w="100%"
+          style={{ justifyContent: 'center' }}
         />
         <NavLink
           label="İşlemler"
@@ -83,6 +71,8 @@ export default function NavigationDrawer({
           }
           onClick={() => handleNavigate('/islemler')}
           variant="subtle"
+          w="100%"
+          style={{ justifyContent: 'center' }}
         />
         <NavLink
           label="Duyurular"
@@ -94,6 +84,8 @@ export default function NavigationDrawer({
           }
           onClick={() => handleNavigate('/duyurular')}
           variant="subtle"
+          w="100%"
+          style={{ justifyContent: 'center' }}
         />
         <NavLink
           label="Kullanıcı İşlemleri"
@@ -105,6 +97,8 @@ export default function NavigationDrawer({
           }
           onClick={() => handleNavigate('/kullanicilar')}
           variant="subtle"
+          w="100%"
+          style={{ justifyContent: 'center' }}
         />
         <NavLink
           label="Dijital Bankacılık Logları"
@@ -116,6 +110,8 @@ export default function NavigationDrawer({
           }
           onClick={() => handleNavigate('/bankacilik-loglari')}
           variant="subtle"
+          w="100%"
+          style={{ justifyContent: 'center' }}
         />
         <NavLink
           label="Kartlarım"
@@ -127,6 +123,8 @@ export default function NavigationDrawer({
           }
           onClick={() => handleNavigate('/kartlar')}
           variant="subtle"
+          w="100%"
+          style={{ justifyContent: 'center' }}
         />
         <NavLink
           label="Ayarlar"
@@ -138,6 +136,8 @@ export default function NavigationDrawer({
           }
           onClick={() => handleNavigate('/ayarlar')}
           variant="subtle"
+          w="100%"
+          style={{ justifyContent: 'center' }}
         />
         <NavLink
           label="Raporlar"
@@ -149,31 +149,22 @@ export default function NavigationDrawer({
           }
           onClick={() => handleNavigate('/raporlar')}
           variant="subtle"
+          w="100%"
+          style={{ justifyContent: 'center' }}
         />
-      </Stack>
-
-      <Text size="xs" fw={700} c="dimmed" mt="xl" mb="xs">
-        KULLANILAN TEKNOLOJİLER
-      </Text>
-      <Stack gap={4}>
-        {technologies.map((tech) => (
-          <a
-            key={tech.name}
-            href={tech.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm no-underline transition hover:bg-gray-100"
-            style={{ color: tech.color }}
-          >
-            <span
-              className="font-medium"
-              style={{ color: 'var(--mantine-color-gray-7)' }}
-            >
-              {tech.name}
-            </span>
-            <ExternalLink size={12} className="text-gray-400" />
-          </a>
-        ))}
+        <NavLink
+          label="Kısayollar"
+          description="Kullanılan teknolojiler ve bağlantılar"
+          leftSection={
+            <ThemeIcon variant="light" color="green" size="lg">
+              <Sparkles size={20} />
+            </ThemeIcon>
+          }
+          onClick={() => handleNavigate('/kisayollar')}
+          variant="subtle"
+          w="100%"
+          style={{ justifyContent: 'center' }}
+        />
       </Stack>
 
       <Text size="xs" c="dimmed" ta="center" mt="xl">

@@ -7,7 +7,6 @@ export default function Footer() {
         <p className="m-0 text-sm">
           &copy; {year} Andromeda Bankacılık Sistemi. Tüm hakları saklıdır.
         </p>
-        <p className="island-kicker m-0">React + Mantine UI ile geliştirildi</p>
       </div>
     </footer>
   )
