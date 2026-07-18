@@ -18,11 +18,13 @@ import { Route as KullanicilarRouteImport } from './routes/kullanicilar'
 import { Route as KisayollarRouteImport } from './routes/kisayollar'
 import { Route as KartlarRouteImport } from './routes/kartlar'
 import { Route as IslemlerRouteImport } from './routes/islemler'
+import { Route as EgitimRouteImport } from './routes/egitim'
 import { Route as DuyurularRouteImport } from './routes/duyurular'
 import { Route as DijitalBankacilikDashboardRouteImport } from './routes/dijital-bankacilik-dashboard'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as BankacilikLoglariRouteImport } from './routes/bankacilik-loglari'
 import { Route as AyarlarRouteImport } from './routes/ayarlar'
+import { Route as AraclarRouteImport } from './routes/araclar'
 import { Route as AktifKullanicilarRouteImport } from './routes/aktif-kullanicilar'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
@@ -75,6 +77,11 @@ const IslemlerRoute = IslemlerRouteImport.update({
   path: '/islemler',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EgitimRoute = EgitimRouteImport.update({
+  id: '/egitim',
+  path: '/egitim',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DuyurularRoute = DuyurularRouteImport.update({
   id: '/duyurular',
   path: '/duyurular',
@@ -99,6 +106,11 @@ const BankacilikLoglariRoute = BankacilikLoglariRouteImport.update({
 const AyarlarRoute = AyarlarRouteImport.update({
   id: '/ayarlar',
   path: '/ayarlar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AraclarRoute = AraclarRouteImport.update({
+  id: '/araclar',
+  path: '/araclar',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AktifKullanicilarRoute = AktifKullanicilarRouteImport.update({
@@ -135,11 +147,13 @@ const DemoFormAddressRoute = DemoFormAddressRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/aktif-kullanicilar': typeof AktifKullanicilarRoute
+  '/araclar': typeof AraclarRoute
   '/ayarlar': typeof AyarlarRoute
   '/bankacilik-loglari': typeof BankacilikLoglariRoute
   '/dashboard': typeof DashboardRoute
   '/dijital-bankacilik-dashboard': typeof DijitalBankacilikDashboardRoute
   '/duyurular': typeof DuyurularRoute
+  '/egitim': typeof EgitimRoute
   '/islemler': typeof IslemlerRoute
   '/kartlar': typeof KartlarRoute
   '/kisayollar': typeof KisayollarRoute
@@ -157,11 +171,13 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/aktif-kullanicilar': typeof AktifKullanicilarRoute
+  '/araclar': typeof AraclarRoute
   '/ayarlar': typeof AyarlarRoute
   '/bankacilik-loglari': typeof BankacilikLoglariRoute
   '/dashboard': typeof DashboardRoute
   '/dijital-bankacilik-dashboard': typeof DijitalBankacilikDashboardRoute
   '/duyurular': typeof DuyurularRoute
+  '/egitim': typeof EgitimRoute
   '/islemler': typeof IslemlerRoute
   '/kartlar': typeof KartlarRoute
   '/kisayollar': typeof KisayollarRoute
@@ -180,11 +196,13 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/aktif-kullanicilar': typeof AktifKullanicilarRoute
+  '/araclar': typeof AraclarRoute
   '/ayarlar': typeof AyarlarRoute
   '/bankacilik-loglari': typeof BankacilikLoglariRoute
   '/dashboard': typeof DashboardRoute
   '/dijital-bankacilik-dashboard': typeof DijitalBankacilikDashboardRoute
   '/duyurular': typeof DuyurularRoute
+  '/egitim': typeof EgitimRoute
   '/islemler': typeof IslemlerRoute
   '/kartlar': typeof KartlarRoute
   '/kisayollar': typeof KisayollarRoute
@@ -204,11 +222,13 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/aktif-kullanicilar'
+    | '/araclar'
     | '/ayarlar'
     | '/bankacilik-loglari'
     | '/dashboard'
     | '/dijital-bankacilik-dashboard'
     | '/duyurular'
+    | '/egitim'
     | '/islemler'
     | '/kartlar'
     | '/kisayollar'
@@ -226,11 +246,13 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/aktif-kullanicilar'
+    | '/araclar'
     | '/ayarlar'
     | '/bankacilik-loglari'
     | '/dashboard'
     | '/dijital-bankacilik-dashboard'
     | '/duyurular'
+    | '/egitim'
     | '/islemler'
     | '/kartlar'
     | '/kisayollar'
@@ -248,11 +270,13 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/aktif-kullanicilar'
+    | '/araclar'
     | '/ayarlar'
     | '/bankacilik-loglari'
     | '/dashboard'
     | '/dijital-bankacilik-dashboard'
     | '/duyurular'
+    | '/egitim'
     | '/islemler'
     | '/kartlar'
     | '/kisayollar'
@@ -271,11 +295,13 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AktifKullanicilarRoute: typeof AktifKullanicilarRoute
+  AraclarRoute: typeof AraclarRoute
   AyarlarRoute: typeof AyarlarRoute
   BankacilikLoglariRoute: typeof BankacilikLoglariRoute
   DashboardRoute: typeof DashboardRoute
   DijitalBankacilikDashboardRoute: typeof DijitalBankacilikDashboardRoute
   DuyurularRoute: typeof DuyurularRoute
+  EgitimRoute: typeof EgitimRoute
   IslemlerRoute: typeof IslemlerRoute
   KartlarRoute: typeof KartlarRoute
   KisayollarRoute: typeof KisayollarRoute
@@ -356,6 +382,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IslemlerRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/egitim': {
+      id: '/egitim'
+      path: '/egitim'
+      fullPath: '/egitim'
+      preLoaderRoute: typeof EgitimRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/duyurular': {
       id: '/duyurular'
       path: '/duyurular'
@@ -389,6 +422,13 @@ declare module '@tanstack/react-router' {
       path: '/ayarlar'
       fullPath: '/ayarlar'
       preLoaderRoute: typeof AyarlarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/araclar': {
+      id: '/araclar'
+      path: '/araclar'
+      fullPath: '/araclar'
+      preLoaderRoute: typeof AraclarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/aktif-kullanicilar': {
@@ -439,11 +479,13 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AktifKullanicilarRoute: AktifKullanicilarRoute,
+  AraclarRoute: AraclarRoute,
   AyarlarRoute: AyarlarRoute,
   BankacilikLoglariRoute: BankacilikLoglariRoute,
   DashboardRoute: DashboardRoute,
   DijitalBankacilikDashboardRoute: DijitalBankacilikDashboardRoute,
   DuyurularRoute: DuyurularRoute,
+  EgitimRoute: EgitimRoute,
   IslemlerRoute: IslemlerRoute,
   KartlarRoute: KartlarRoute,
   KisayollarRoute: KisayollarRoute,

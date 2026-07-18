@@ -2,6 +2,7 @@ import { useNavigate } from '@tanstack/react-router'
 import { Drawer, NavLink, Stack, Text, ThemeIcon } from '@mantine/core'
 import {
   Bell,
+  BookOpen,
   CreditCard,
   FileCode,
   FileText,
@@ -16,6 +17,7 @@ import {
   UserCheck,
   Sliders,
   MessageSquare,
+  Wrench,
 } from 'lucide-react'
 
 interface NavigationDrawerProps {
@@ -56,6 +58,19 @@ export default function NavigationDrawer({
       }}
     >
       <Stack gap="xs" align="center">
+        <NavLink
+          label="Eğitim"
+          description="Sistem kullanım rehberi"
+          leftSection={
+            <ThemeIcon variant="light" color="teal" size="lg">
+              <BookOpen size={20} />
+            </ThemeIcon>
+          }
+          onClick={() => handleNavigate('/egitim')}
+          variant="subtle"
+          w="100%"
+          style={{ justifyContent: 'center' }}
+        />
         <NavLink
           label="Dashboard"
           description="Genel durum ve analitikler"
@@ -221,6 +236,19 @@ export default function NavigationDrawer({
             </ThemeIcon>
           }
           onClick={() => handleNavigate('/raporlar')}
+          variant="subtle"
+          w="100%"
+          style={{ justifyContent: 'center' }}
+        />
+        <NavLink
+          label="Araçlar"
+          description="JSON karşılaştırma ve araçları"
+          leftSection={
+            <ThemeIcon variant="light" color="green" size="lg">
+              <Wrench size={20} />
+            </ThemeIcon>
+          }
+          onClick={() => handleNavigate('/araclar')}
           variant="subtle"
           w="100%"
           style={{ justifyContent: 'center' }}
