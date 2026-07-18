@@ -10,6 +10,7 @@ import { Notifications } from '@mantine/notifications'
 import Footer from '../components/Footer'
 import Header from '../components/Header'
 import { AuthProvider } from '../contexts/AuthContext'
+import { RootErrorComponent } from '../components/ErrorBoundary'
 
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
 
@@ -53,6 +54,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     ],
   }),
   shellComponent: RootDocument,
+  errorComponent: RootErrorComponent,
 })
 
 function RootDocument({ children }: { children: React.ReactNode }) {

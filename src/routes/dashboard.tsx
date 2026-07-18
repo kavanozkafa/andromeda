@@ -1,5 +1,8 @@
 import { useState } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
+import { protectedRouteOptions } from '#/lib/auth-guard'
+import { DashboardSkeleton } from '#/components/Skeleton'
+import { RouteErrorComponent } from '#/components/ErrorBoundary'
 import {
   Badge,
   Card,
@@ -28,6 +31,9 @@ import {
 } from '#/data/mock-data'
 
 export const Route = createFileRoute('/dashboard')({
+  ...protectedRouteOptions,
+  pendingComponent: DashboardSkeleton,
+  errorComponent: RouteErrorComponent,
   component: DashboardPage,
 })
 

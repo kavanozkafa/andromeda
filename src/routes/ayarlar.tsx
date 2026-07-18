@@ -1,5 +1,8 @@
 import { useState } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
+import { protectedRouteOptions } from '#/lib/auth-guard'
+import { PageSkeleton } from '#/components/Skeleton'
+import { RouteErrorComponent } from '#/components/ErrorBoundary'
 import {
   ActionIcon,
   Badge,
@@ -31,6 +34,9 @@ import {
 import { useAuth } from '#/contexts/AuthContext'
 
 export const Route = createFileRoute('/ayarlar')({
+  ...protectedRouteOptions,
+  pendingComponent: PageSkeleton,
+  errorComponent: RouteErrorComponent,
   component: AyarlarPage,
 })
 

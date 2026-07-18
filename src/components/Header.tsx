@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link } from '@tanstack/react-router'
+import { Link, useNavigate } from '@tanstack/react-router'
 import {
   ActionIcon,
   Avatar,
@@ -31,6 +31,7 @@ import NavigationDrawer from './NavigationDrawer'
 import { useAuth } from '../contexts/AuthContext'
 
 export default function Header() {
+  const navigate = useNavigate()
   const [drawerOpened, setDrawerOpened] = useState(false)
   const [passwordModalOpened, setPasswordModalOpened] = useState(false)
   const [profileModalOpened, setProfileModalOpened] = useState(false)
@@ -74,12 +75,12 @@ export default function Header() {
   })
 
   const handleLogin = () => {
-    window.location.href = '/login'
+    navigate({ to: '/login' })
   }
 
   const handleLogout = () => {
     logout()
-    window.location.href = '/login'
+    navigate({ to: '/login' })
   }
 
   const handlePasswordChange = (values: typeof passwordForm.values) => {

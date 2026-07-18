@@ -1,5 +1,8 @@
 import { useMemo, useState } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
+import { protectedRouteOptions } from '#/lib/auth-guard'
+import { PageSkeleton } from '#/components/Skeleton'
+import { RouteErrorComponent } from '#/components/ErrorBoundary'
 import {
   ActionIcon,
   Badge,
@@ -16,15 +19,18 @@ import {
 } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 import { CreditCard, Eye, EyeOff, Lock, Search, Unlock } from 'lucide-react'
-import { makeKrediKartlari } from '#/data/mock-data'
+import { useKrediKartlari } from '#/hooks/use-banking'
 import type { KrediKarti } from '#/data/mock-data'
 
 export const Route = createFileRoute('/kartlar')({
+  ...protectedRouteOptions,
+  pendingComponent: PageSkeleton,
+  errorComponent: RouteErrorComponent,
   component: KartlarPage,
 })
 
 function KartlarPage() {
-  const [kartlar] = useState<KrediKarti[]>(() => makeKrediKartlari(8))
+  const { data: kartlar = [] } = useKrediKartlari()
   const [searchTerm, setSearchTerm] = useState('')
   const [showCVV, setShowCVV] = useState<string | null>(null)
   const [seciliKart, setSeciliKart] = useState<KrediKarti | null>(null)

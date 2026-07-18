@@ -1,4 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { protectedRouteOptions } from '#/lib/auth-guard'
+import { PageSkeleton } from '#/components/Skeleton'
+import { RouteErrorComponent } from '#/components/ErrorBoundary'
 import { Badge, Card, SimpleGrid, Stack, Text, Title } from '@mantine/core'
 import {
   Code2,
@@ -13,6 +16,9 @@ import {
 } from 'lucide-react'
 
 export const Route = createFileRoute('/kisayollar')({
+  ...protectedRouteOptions,
+  pendingComponent: PageSkeleton,
+  errorComponent: RouteErrorComponent,
   component: KisayollarPage,
 })
 

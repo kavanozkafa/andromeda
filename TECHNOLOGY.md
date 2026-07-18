@@ -2,32 +2,36 @@
 
 ## Project Overview
 
-This is a modern full-stack React application built with TanStack Start (SSR framework). The project follows a monorepo-style structure with TypeScript-first development.
+Andromeda, TanStack Start (SSR) üzerine kurulmuş modern bir bankacılık web uygulamasıdır. TypeScript-first geliştirme yaklaşımı, Mantine UI bileşen kütüphanesi ve yeşil/beyaz renk paletiyle tasarlanmıştır. Tüm arayüz metinleri Türkçe'dir.
+
+Giriş bilgileri: `admin / admin123`
 
 ## Technology Stack
 
 ### Core Framework
 
-- **React 19** - UI library with latest concurrent features
+- **React 19** - Concurrent features ile UI library
 - **TypeScript 6** - Strongly typed JavaScript superset
 - **Vite 8** - Lightning-fast build tool and dev server
 
 ### Routing & Navigation
 
-- **TanStack Router** - Type-safe routing with file-based route generation
-- **TanStack Start** - Full-stack React framework with SSR support
-- **Router DevTools** - Development tools for route debugging
+- **TanStack Router** - File-based routing ile type-safe navigasyon
+- **TanStack Start** - Full-stack React framework (SSR desteği)
+- **beforeLoad** - Route guard (auth kontrolü)
+- **useNavigate** - SPA navigasyonu (window.location.href yerine)
 
 ### State Management & Data Fetching
 
-- **TanStack Query** - Server state management with caching
+- **TanStack Query** - Server state yönetimi, caching, optimistic updates
 - **TanStack React Form** - Form state management
-- **TanStack React Table** - Headless table library for data grids
+- **TanStack React Table** - Headless table library (data grids)
+- **@tanstack/react-virtual** - Virtualization (büyük tablolarda performans)
 
 ### Styling
 
 - **TailwindCSS 4** - Utility-first CSS framework
-- **@tailwindcss/typography** - Typography plugin for prose styling
+- **@tailwindcss/typography** - Typography plugin
 
 ### Validation
 
@@ -35,21 +39,21 @@ This is a modern full-stack React application built with TanStack Start (SSR fra
 
 ### UI Components
 
-- **Mantine UI** - Full-featured React component library (v9)
-  - @mantine/core - Core UI components (Button, Modal, Table, etc.)
-  - @mantine/hooks - Custom React hooks
-  - @mantine/form - Form state management with validation
-  - @mantine/modals - Modal management
-  - @mantine/notifications - Toast notifications
-- **Emotion** - CSS-in-JS library (Mantine dependency)
+- **Mantine UI v9** - Full-featured React component library
+  - `@mantine/core` - Core UI (Button, Modal, Table, Tabs, Switch, Badge vb.)
+  - `@mantine/hooks` - Custom React hooks
+  - `@mantine/form` - Form state management with validation
+  - `@mantine/modals` - Modal management
+  - `@mantine/notifications` - Toast notifications
+  - `@mantine/charts` - Chart components (AreaChart, BarChart, DonutChart)
+  - `@mantine/dates` - DatePicker components
 - **Lucide React** - Icon library
 
 ### Testing
 
 - **Vitest** - Vite-native testing framework
-- **@testing-library/react** - React component testing utilities
-- **@testing-library/dom** - DOM testing utilities
-- **jsdom** - JavaScript DOM implementation for testing
+- **@testing-library/react** - React component testing
+- **jsdom** - JavaScript DOM implementation
 
 ### Code Quality
 
@@ -57,115 +61,213 @@ This is a modern full-stack React application built with TanStack Start (SSR fra
 - **Prettier** - Code formatting
 - **@tanstack/eslint-config** - TanStack-specific lint rules
 
-### Development Tools
-
-- **TanStack DevTools** - React DevTools integration
-- **@tanstack/router-cli** - CLI tools for route generation
-- **@tanstack/devtools-vite** - Vite plugin for devtools
-
 ### Utilities
 
-- **@faker-js/faker** - Fake data generation for testing
-- **@tanstack/match-sorter-utils** - Fuzzy sorting/filtering utilities
+- **@faker-js/faker** - Mock data generation
+- **@tanstack/match-sorter-utils** - Fuzzy sorting/filtering
+- **dayjs** - Date manipulation
 
 ## Project Structure
 
 ```
 src/
-├── routes/          # File-based routing (TanStack Router)
-│   ├── __root.tsx           # Root layout with MantineProvider
-│   ├── index.tsx            # Home page
-│   ├── about.tsx            # About page
-│   ├── duyurular.tsx        # Announcements CRUD page
-│   ├── kullanicilar.tsx     # User management page
-│   ├── bankacilik-loglari.tsx # Banking logs data grid
-│   └── demo/               # Demo pages
-├── components/      # Reusable UI components
-│   ├── Header.tsx           # Header with hamburger menu
-│   ├── Footer.tsx           # Footer component
-│   ├── ThemeToggle.tsx      # Light/Dark theme toggle
-│   ├── NavigationDrawer.tsx # Left sidebar navigation drawer
-│   └── LinkTree.tsx         # Technology links with icons
-├── data/            # Mock data and data models
-│   └── mock-data.ts        # Faker-based mock data generators
-├── hooks/           # Custom React hooks
-├── integrations/    # Third-party integrations
-│   └── tanstack-query/     # TanStack Query setup
-└── styles.css       # Global styles and TailwindCSS
-```
-
-## Development Commands
-
-```bash
-pnpm dev          # Start development server (port 3000)
-pnpm build        # Production build
-pnpm test         # Run tests with Vitest
-pnpm lint         # Run ESLint
-pnpm format       # Format code with Prettier
-pnpm generate-routes  # Generate route tree
+├── routes/                    # File-based routing (TanStack Router)
+│   ├── __root.tsx             # Root layout, MantineProvider, QueryProvider
+│   ├── routeTree.gen.ts       # Auto-generated route tree
+│   ├── index.tsx              # Ana sayfa (landing)
+│   ├── login.tsx              # Giriş sayfası
+│   ├── dashboard.tsx          # Genel bankacılık dashboard
+│   ├── dijital-bankacilik-dashboard.tsx  # Giriş denemeleri ve hata analizi
+│   ├── islemler.tsx           # İşlem geçmişi (tablo + filtre)
+│   ├── duyurular.tsx          # Duyurular (tablo + satır içi düzenleme)
+│   ├── kullanicilar.tsx       # Kullanıcı işlemleri (hesap no arama + 3 tab)
+│   ├── bankacilik-loglari.tsx # Dijital bankacılık logları
+│   ├── kartlar.tsx            # Kredi/banka kartları yönetimi
+│   ├── musteri-telefon-bilgileri.tsx  # Müşteri telefon modelleri + grafik
+│   ├── ayarlar.tsx            # Hesap ve bildirim ayarları
+│   ├── raporlar.tsx           # Rapor oluşturma ve dışa aktarma
+│   └── kisayollar.tsx         # Kısayollar ve teknoloji bağlantıları
+├── components/                # Reusable UI components
+│   ├── Header.tsx             # Header (saat, profil menüsü, tema toggle)
+│   ├── Footer.tsx             # Footer
+│   ├── ThemeToggle.tsx        # Light/Dark theme toggle (profilde)
+│   ├── NavigationDrawer.tsx   # Sol sidebar menü
+│   ├── DataTable.tsx          # TanStack Table + Virtualization wrapper
+│   ├── Skeleton.tsx           # Loading skeleton components (memo'd)
+│   └── ErrorBoundary.tsx      # Route & root error boundaries
+├── data/
+│   └── mock-data.ts           # Faker-based mock data + TypeScript interfaces
+├── hooks/
+│   └── use-banking.ts         # TanStack Query hooks (CRUD operations)
+├── lib/
+│   ├── api.ts                 # Mock API service (async fonksiyonlar)
+│   └── auth-guard.ts          # beforeLoad auth guard
+├── integrations/
+│   └── tanstack-query/        # TanStack Query provider setup
+└── styles.css                 # Global styles
 ```
 
 ## Application Pages
 
-### Home Page (`/`)
+### Ana Sayfa (`/`)
 
 - Landing page with hero section and feature cards
-- LinkTree component showing technology stack with icons
 - Quick navigation to application pages
+
+### Giriş (`/login`)
+
+- Kullanıcı adı ve şifre ile giriş
+- Geçersiz girişlerde hata bildirimi
+
+### Dashboard (`/dashboard`)
+
+- 4 özet kartı (Toplam Kullanıcı, Günlük İşlemler, Toplam Gelir, Aktif Kartlar)
+- İşlem Hacmi AreaChart
+- Gelir Dağılımı DonutChart
+- Kullanıcı Aktivitesi BarChart (şehir bazlı)
+- Son İşlemler tablosu
+
+### Dijital Bankacılık Dashboard (`/dijital-bankacilik-dashboard`)
+
+- Toplam/BAşarılı/Hatalı giriş denemesi kartları
+- Hata Kategorileri Dağılımı DonutChart (7 kategori)
+- Cihaz Bazlı Giriş Denemeleri BarChart
+- Hata Kategorileri Detayı (adet + yüzde)
+- Son Hatalı Girişler tablosu
+- Hata türleri: Yanlış Şifre, Hatalı Kullanıcı Adı, Hesap Blokeli, OTP Başarısız, Oturum Süresi Dolmuş, IP Engelli, Çok Fazla Deneme
+
+### İşlemler (`/islemler`)
+
+- 100 mock bankacılık işlemi
+- Arama (müşteri/referans no), filtreleme (işlem tipi, durum, tarih aralığı)
+- CSV dışa aktarma
+- Özet kartları (toplam işlem, tutar, başarı oranı)
+- TanStack Table + virtualization
 
 ### Duyurular (`/duyurular`)
 
-- Announcements management with CRUD operations
-- Add new announcements via modal form
-- Edit existing announcements
-- Delete with confirmation dialog
-- Status badges (aktif/pasif/taslak)
+- Tablo görünümü, her satır satır içi düzenlenebilir
+- Başlık, içerik, durum doğrudan tabloda düzenlenir
+- Yeni duyuru ekleme (satır içi)
+- Silme işlemi
+- TanStack Query ile CRUD (API üzerinden)
 
 ### Kullanıcı İşlemleri (`/kullanicilar`)
 
-- Customer information management
-- Search functionality by name, email, or account number
-- Edit customer details via modal form
-- Display bakiye (balance) in Turkish Lira
+- Müşteri numarasına göre arama (hesap no)
+- Bulunan müşteri 3 tab'lı detay görünümü:
+  - **Kullanıcı Bilgileri**: Ad soyad, email, telefon, hesap no, bakiye, kayıt tarihi
+  - **Güvenlik Bilgileri**: Son giriş tarihi/IP/cihaz, 2FA durumu, şifre güncelleme
+  - **Güvenlik Ayarları**: 2FA aç/kapat, şifre sıfırla, hesap dondur, oturum kapat
+- Arama yapılmazsa tüm müşteriler kart grid'i olarak gösterilir
 
 ### Dijital Bankacılık Logları (`/bankacilik-loglari`)
 
-- Data grid with 50 mock banking transactions
-- Columns: Müşteri Adı, İşlem Tipi, Tutar, Tarih, Durum, IP Adresi, Cihaz, Konum, Referans No
-- Searchable by customer name, reference number, or transaction type
-- Pagination with 10 records per page
-- Color-coded badges for transaction types and status
+- 50 mock banking transaction log
+- 9 sütun: Müşteri Adı, İşlem Tipi, Tutar, Tarih, Durum, IP Adresi, Cihaz, Konum, Referans No
+- Arama, sayfalama (10 kayıt/sayfa)
+- TanStack Table + virtualization
 
-### Navigation
+### Kartlarım (`/kartlar`)
 
-- Hamburger menu (left drawer) accessible from header
-- Links to all application pages
+- Kredi/banka kartları görsel tasarım (Visa/MC/Troy)
+- Kullanım progress bar'ları
+- Kart blokajı aç/kapat
+- Detay modal'ı
+
+### Müşteri Telefon Bilgileri (`/musteri-telefon-bilgileri`)
+
+- 20 telefon modeli (Samsung, Apple, Xiaomi, Huawei, Google, Oppo, OnePlus, Nokia)
+- BarChart: En çok kullanılan 10 model
+- Marka dağılımı paneli (adet + yüzde)
+- Arama + sıralı tablo
+
+### Ayarlar (`/ayarlar`)
+
+- Profil formu, bildirim toggle'ları, güvenlik ayarları
+
+### Raporlar (`/raporlar`)
+
+- 4 rapor türü: İşlem, Kullanıcı, Gelir, Şube
+- Tarih filtresi, durum filtresi
+- CSV indirme, yazdırma
+- Özet kartları + dinamik tablo
+
+### Kısayollar (`/kisayollar`)
+
+- Teknoloji bağlantıları ve kısayollar
+
+## Data Layer
+
+### Mock API (`src/lib/api.ts`)
+
+Tüm veriler simüle edilmiş async API üzerinden yönetilir:
+
+- `api.duyurular` - CRUD (list, create, update, delete)
+- `api.kullanicilar` - CRUD (list, update, delete)
+- `api.bankacilikLoglari` - List
+- `api.krediKartlari` - List
+- `api.loginKayitlari` - List
+- `api.telefonModelleri` - List
+
+Her endpoint 200-400ms gecikme ile çalışır.
+
+### TanStack Query Hooks (`src/hooks/use-banking.ts`)
+
+- `useDuyurular()`, `useDuyuruCreate()`, `useDuyuruUpdate()`, `useDuyuruDelete()`
+- `useKullanicilar()`, `useKullaniciUpdate()`, `useKullaniciDelete()`
+- `useBankacilikLoglari()`
+- `useKrediKartlari()`
+- `useLoginKayitlari()`
+- `useTelefonModelleri()`
+
+### Route Guards (`src/lib/auth-guard.ts`)
+
+- `beforeLoad` hook ile auth kontrolü
+- `checkAuth()` fonksiyonu localStorage'dan token kontrolü
+- Geçersiz token → `/login` sayfasına redirect
+
+## Development Commands
+
+```bash
+pnpm dev              # Start development server (port 3000)
+pnpm build            # Production build
+pnpm test             # Run tests with Vitest
+pnpm lint             # Run ESLint
+pnpm format           # Format code with Prettier
+pnpm generate-routes  # Generate route tree (yeni route eklendikten sonra)
+```
+
+## Performance Optimizations (Faz 5)
+
+- **@tanstack/react-virtual** — 50+ satırlı tablolarda sadece görünür satırlar renderlanır
+- **React.memo** — DataTable, Skeleton bileşenleri sarılı
+- **useCallback** — Event handler'lar referans sabitliği için sarılı
+- **useMemo** — Filtreleme, hesaplama ve transformasyonlar memoize edilmiş
+- **TanStack Query cache** — API verileri otomatik cache'lenir, invalidation ile güncellenir
 
 ## AI Assistant Guidelines
 
 ### When Working With This Project:
 
-1. **Type Safety First** - Always use TypeScript types, leverage Zod for runtime validation
-2. **Component Patterns** - Use functional components with hooks, follow existing component structure
-3. **Server Components** - Leverage TanStack Start's server-side capabilities
-4. **Data Fetching** - Use TanStack Query for server state, avoid manual useEffect for data fetching
-5. **Routing** - File-based routing in src/routes/, use TanStack Router's type-safe navigation
-6. **Styling** - Use TailwindCSS utility classes, maintain consistent design tokens
-7. **Testing** - Write tests with Vitest + React Testing Library, follow existing test patterns
-8. **Performance** - Use React.memo, useMemo, useCallback appropriately, leverage concurrent features
-9. **Mantine UI** - Use Mantine components for forms, modals, tables, and UI elements
-   - Import from `@mantine/core` for UI components
-   - Use `@mantine/form` for form state management
-   - Use `@mantine/notifications` for toast messages
-   - Follow green/white color theme (primaryColor: 'green')
+1. **Type Safety First** — Her zaman TypeScript interface kullan
+2. **Component Patterns** — Functional components + hooks, mevcut yapıyı takip et
+3. **Data Fetching** — Manuel useEffect yerine TanStack Query hook'ları kullan
+4. **Routing** — File-based routing, `useNavigate` ile SPA navigasyonu
+5. **Performance** — `useMemo`/`useCallback`/`React.memo` kullan, büyük listelerde virtualization ekle
+6. **Mantine UI** — Form için `@mantine/form`, bildirim için `@mantine/notifications`
+7. **Renk Paleti** — Yeşil/beyaz tema (`primaryColor: 'green'`)
+8. **Türkçe** — Tüm UI metinleri Türkçe olmalı
+9. **Route Guard** — Korumalı sayfalara `protectedRouteOptions` ekle
+10. **Error Handling** — Her route'a `errorComponent`, `pendingComponent` ekle
 
 ### Code Conventions:
 
-- Use TypeScript interfaces over types when possible
-- Prefer named exports over default exports
-- Follow existing naming conventions in the codebase
-- Use Zod schemas for form validation and API contracts
-- Implement proper error boundaries and loading states
-- Use Mantine's `useForm` hook for form management
-- Use Mantine's `notifications` for user feedback
-- Keep components in src/components/ reusable across pages
+- Interface > type (mümkün oldukça)
+- Named exports tercih et
+- Mevcut naming conventions'u takip et
+- Form validasyonu için Mantine `useForm` kullan
+- Bildirimler için Mantine `notifications` kullan
+- Yeni route ekledikten sonra `pnpm generate-routes` çalıştır
+- Mock data için `src/data/mock-data.ts` dosyasını güncelle
+- API endpoint'i için `src/lib/api.ts` ve hook için `src/hooks/use-banking.ts` güncelle

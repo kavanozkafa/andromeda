@@ -1,5 +1,9 @@
 import { useMemo, useState } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
+import { protectedRouteOptions } from '#/lib/auth-guard'
+import { TableSkeleton } from '#/components/Skeleton'
+import { RouteErrorComponent } from '#/components/ErrorBoundary'
+import { DataTable } from '#/components/DataTable'
 import {
   ActionIcon,
   Button,
@@ -10,7 +14,6 @@ import {
   Paper,
   SimpleGrid,
   Stack,
-  Table,
   Text,
   TextInput,
   Title,
@@ -18,18 +21,42 @@ import {
 import { DatePickerInput } from '@mantine/dates'
 import { notifications } from '@mantine/notifications'
 import { Download, FileText, Filter, Printer, RefreshCw } from 'lucide-react'
-import { makeBankacilikLoglari, makeKullanicilar } from '#/data/mock-data'
-import type { BankacilikLog, Kullanici } from '#/data/mock-data'
+import { useBankacilikLoglari, useKullanicilar } from '#/hooks/use-banking'
+import type { ColumnDef } from '@tanstack/react-table'
+import type { BankacilikLog } from '#/data/mock-data'
 
 export const Route = createFileRoute('/raporlar')({
+  ...protectedRouteOptions,
+  pendingComponent: () => <TableSkeleton cols={4} />,
+  errorComponent: RouteErrorComponent,
   component: RaporlarPage,
 })
 
 type RaporTuru = 'islemler' | 'kullanicilar' | 'gelir' | 'subeler'
 
+const islemTipiLabels: Record<BankacilikLog['islemTipi'], string> = {
+  para_yatirma: 'Para Yatırma',
+  para_cekme: 'Para Çekme',
+  havale: 'Havale',
+  eft: 'EFT',
+  odeme: 'Ödeme',
+  yatirim: 'Yatırım',
+}
+
+function getDurumLabel(durum: BankacilikLog['durum']) {
+  switch (durum) {
+    case 'basarili':
+      return 'Başarılı'
+    case 'basarisiz':
+      return 'Başarısız'
+    case 'beklemede':
+      return 'Beklemede'
+  }
+}
+
 function RaporlarPage() {
-  const [islemler] = useState<BankacilikLog[]>(() => makeBankacilikLoglari(200))
-  const [kullanicilar] = useState<Kullanici[]>(() => makeKullanicilar(100))
+  const { data: islemler = [] } = useBankacilikLoglari()
+  const { data: kullanicilar = [] } = useKullanicilar()
   const [raporTuru, setRaporTuru] = useState<RaporTuru>('islemler')
   const [baslangicTarihi, setBaslangicTarihi] = useState<Date | null>(null)
   const [bitisTarihi, setBitisTarihi] = useState<Date | null>(null)
@@ -52,7 +79,7 @@ function RaporlarPage() {
             .slice(0, 50)
             .map((i) => [
               i.musteriAdi,
-              getIslemTipiLabel(i.islemTipi),
+              islemTipiLabels[i.islemTipi],
               `${i.tutar.toLocaleString('tr-TR')} ₺`,
               i.tarih.toLocaleDateString('tr-TR'),
               getDurumLabel(i.durum),
@@ -172,28 +199,27 @@ function RaporlarPage() {
     }
   }, [raporTuru, islemler, kullanicilar, durumFiltre])
 
-  function getIslemTipiLabel(tip: BankacilikLog['islemTipi']) {
-    const labels: Record<BankacilikLog['islemTipi'], string> = {
-      para_yatirma: 'Para Yatırma',
-      para_cekme: 'Para Çekme',
-      havale: 'Havale',
-      eft: 'EFT',
-      odeme: 'Ödeme',
-      yatirim: 'Yatırım',
-    }
-    return labels[tip]
-  }
-
-  function getDurumLabel(durum: BankacilikLog['durum']) {
-    switch (durum) {
-      case 'basarili':
-        return 'Başarılı'
-      case 'basarisiz':
-        return 'Başarısız'
-      case 'beklemede':
-        return 'Beklemede'
-    }
-  }
+  const dynamicColumns = useMemo(() => {
+    const cols: ColumnDef<Record<string, string>, any>[] =
+      raporVerileri.sutunlar.map((sutun, index) => ({
+        id: sutun,
+        header: sutun,
+        accessorFn: (row) => Object.values(row)[index],
+        cell: ({ row }) => (
+          <Text
+            fw={
+              row.index === 0 || Object.keys(row.original)[0] === sutun
+                ? 500
+                : 400
+            }
+            size="sm"
+          >
+            {Object.values(row.original)[raporVerileri.sutunlar.indexOf(sutun)]}
+          </Text>
+        ),
+      }))
+    return cols
+  }, [raporVerileri.sutunlar])
 
   const handleExportCSV = () => {
     const headers = raporVerileri.sutunlar
@@ -230,6 +256,16 @@ function RaporlarPage() {
       color: 'green',
     })
   }
+
+  const raporTableData = useMemo(() => {
+    return raporVerileri.veriler.map((satir) => {
+      const obj: Record<string, string> = {}
+      raporVerileri.sutunlar.forEach((sutun, i) => {
+        obj[sutun] = satir[i]
+      })
+      return obj
+    })
+  }, [raporVerileri.veriler, raporVerileri.sutunlar])
 
   return (
     <div className="demo-page-wide">
@@ -376,28 +412,7 @@ function RaporlarPage() {
             ))}
           </SimpleGrid>
 
-          <Table striped highlightOnHover withTableBorder>
-            <Table.Thead>
-              <Table.Tr>
-                {raporVerileri.sutunlar.map((sutun) => (
-                  <Table.Th key={sutun}>{sutun}</Table.Th>
-                ))}
-              </Table.Tr>
-            </Table.Thead>
-            <Table.Tbody>
-              {raporVerileri.veriler.map((satir, index) => (
-                <Table.Tr key={index}>
-                  {satir.map((hucre, hucreIndex) => (
-                    <Table.Td key={hucreIndex}>
-                      <Text fw={hucreIndex === 0 ? 500 : 400} size="sm">
-                        {hucre}
-                      </Text>
-                    </Table.Td>
-                  ))}
-                </Table.Tr>
-              ))}
-            </Table.Tbody>
-          </Table>
+          <DataTable data={raporTableData} columns={dynamicColumns} />
 
           <Divider my="lg" />
 

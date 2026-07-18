@@ -37,6 +37,7 @@
     "@tanstack/react-router-ssr-query": "latest",
     "@tanstack/react-start": "latest",
     "@tanstack/react-table": "latest",
+    "@tanstack/react-virtual": "^3.14.6",
     "@tanstack/router-plugin": "^1.132.0",
     "dayjs": "^1.11.21",
     "lucide-react": "^0.545.0",

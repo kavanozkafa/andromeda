@@ -1,3 +1,4 @@
+import { useNavigate } from '@tanstack/react-router'
 import { Drawer, NavLink, Stack, Text, ThemeIcon } from '@mantine/core'
 import {
   Bell,
@@ -8,6 +9,8 @@ import {
   LayoutDashboard,
   Leaf,
   Settings,
+  ShieldCheck,
+  Smartphone,
   Sparkles,
   Users,
 } from 'lucide-react'
@@ -21,8 +24,10 @@ export default function NavigationDrawer({
   opened,
   onClose,
 }: NavigationDrawerProps) {
+  const navigate = useNavigate()
+
   const handleNavigate = (path: string) => {
-    window.location.href = path
+    navigate({ to: path })
     onClose()
   }
 
@@ -57,6 +62,19 @@ export default function NavigationDrawer({
             </ThemeIcon>
           }
           onClick={() => handleNavigate('/dashboard')}
+          variant="subtle"
+          w="100%"
+          style={{ justifyContent: 'center' }}
+        />
+        <NavLink
+          label="Dijital Bankacılık"
+          description="Giriş denemeleri ve hata analizi"
+          leftSection={
+            <ThemeIcon variant="light" color="green" size="lg">
+              <ShieldCheck size={20} />
+            </ThemeIcon>
+          }
+          onClick={() => handleNavigate('/dijital-bankacilik-dashboard')}
           variant="subtle"
           w="100%"
           style={{ justifyContent: 'center' }}
@@ -122,6 +140,19 @@ export default function NavigationDrawer({
             </ThemeIcon>
           }
           onClick={() => handleNavigate('/kartlar')}
+          variant="subtle"
+          w="100%"
+          style={{ justifyContent: 'center' }}
+        />
+        <NavLink
+          label="Telefon Bilgileri"
+          description="Müşteri telefon modelleri ve marka dağılımı"
+          leftSection={
+            <ThemeIcon variant="light" color="green" size="lg">
+              <Smartphone size={20} />
+            </ThemeIcon>
+          }
+          onClick={() => handleNavigate('/musteri-telefon-bilgileri')}
           variant="subtle"
           w="100%"
           style={{ justifyContent: 'center' }}

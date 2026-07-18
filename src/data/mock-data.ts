@@ -45,6 +45,11 @@ export interface Kullanici {
   hesapNo: string
   bakiye: number
   kayitTarihi: Date
+  sonGirisTarihi: Date
+  sonGirisIp: string
+  sonGirisCihaz: string
+  ikiAdimliDogrulama: boolean
+  sifreGuncellemeTarihi: Date
 }
 
 export interface BankacilikLog {
@@ -61,6 +66,87 @@ export interface BankacilikLog {
   referansNo: string
 }
 
+export interface LoginKaydi {
+  id: string
+  kullaniciAdi: string
+  tarih: Date
+  basarili: boolean
+  hataKategorisi?:
+    | 'yanlis_sifre'
+    | 'hatali_kullanici_adi'
+    | 'hesap_blokeli'
+    | 'otp_basarisiz'
+    | 'oturum_suresi_dolmus'
+    | 'ip_engelli'
+    | 'cok_fazla_deneme'
+  ipAdresi: string
+  cihaz: string
+  konum: string
+}
+
+export function makeLoginKayitlari(count: number = 200): LoginKaydi[] {
+  const hataKategorileri: LoginKaydi['hataKategorisi'][] = [
+    'yanlis_sifre',
+    'hatali_kullanici_adi',
+    'hesap_blokeli',
+    'otp_basarisiz',
+    'oturum_suresi_dolmus',
+    'ip_engelli',
+    'cok_fazla_deneme',
+  ]
+  const cihazlar = [
+    'iPhone 15 Pro',
+    'Samsung Galaxy S24',
+    'iPad Air',
+    'Web Tarayıcı - Chrome',
+    'Web Tarayıcı - Firefox',
+    'Android Tablet',
+    'Huawei P60',
+  ]
+  const konumlar = [
+    'İstanbul',
+    'Ankara',
+    'İzmir',
+    'Bursa',
+    'Antalya',
+    'Gaziantep',
+    'Konya',
+  ]
+  const kullanicilar = [
+    'ahmet.yilmaz',
+    'ayse.demir',
+    'mehmet.kaya',
+    'fatma.ozkan',
+    'ali.celik',
+    'zeynep.aksoy',
+    'hasan.yildiz',
+    'emine.dogan',
+    'mustafa.arslan',
+    'selin.koc',
+    'burak.akdeniz',
+    'elif.cinar',
+    'murat.tas',
+    'gul.erdem',
+    'oguz.kaplan',
+  ]
+
+  return Array.from({ length: count }, () => {
+    const basarili = faker.datatype.boolean({ probability: 0.72 })
+    return {
+      id: faker.string.uuid(),
+      kullaniciAdi: faker.helpers.arrayElement(kullanicilar),
+      tarih: faker.date.recent({ days: 30 }),
+      basarili,
+      hataKategorisi: basarili
+        ? undefined
+        : faker.helpers.arrayElement(hataKategorileri),
+      ipAdresi: faker.internet.ip(),
+      cihaz: faker.helpers.arrayElement(cihazlar),
+      konum: faker.helpers.arrayElement(konumlar),
+    }
+  })
+}
+
 export function makeDuyurular(count: number = 10): Duyuru[] {
   return Array.from({ length: count }, () => ({
     id: faker.string.uuid(),
@@ -72,6 +158,13 @@ export function makeDuyurular(count: number = 10): Duyuru[] {
 }
 
 export function makeKullanicilar(count: number = 20): Kullanici[] {
+  const cihazlar = [
+    'iPhone 15 Pro',
+    'Samsung Galaxy S24',
+    'iPad Air',
+    'Web Tarayıcı',
+    'Android Tablet',
+  ]
   return Array.from({ length: count }, () => ({
     id: faker.string.uuid(),
     adSoyad: faker.person.fullName(),
@@ -80,6 +173,11 @@ export function makeKullanicilar(count: number = 20): Kullanici[] {
     hesapNo: faker.finance.accountNumber(10),
     bakiye: Number(faker.finance.amount({ min: 100, max: 500000 })),
     kayitTarihi: faker.date.past({ years: 5 }),
+    sonGirisTarihi: faker.date.recent({ days: 30 }),
+    sonGirisIp: faker.internet.ip(),
+    sonGirisCihaz: faker.helpers.arrayElement(cihazlar),
+    ikiAdimliDogrulama: faker.datatype.boolean({ probability: 0.4 }),
+    sifreGuncellemeTarihi: faker.date.past({ years: 1 }),
   }))
 }
 
@@ -261,4 +359,35 @@ export function makeKrediKartlari(count: number = 6): KrediKarti[] {
       durum: faker.helpers.arrayElement(durumlar),
     }
   })
+}
+
+export interface TelefonModel {
+  model: string
+  marka: string
+  adet: number
+}
+
+export function makeTelefonModelleri(): TelefonModel[] {
+  return [
+    { model: 'Galaxy S24 Ultra', marka: 'Samsung', adet: 1245 },
+    { model: 'iPhone 15 Pro', marka: 'Apple', adet: 987 },
+    { model: 'Redmi Note 13', marka: 'Xiaomi', adet: 876 },
+    { model: 'Galaxy A54', marka: 'Samsung', adet: 753 },
+    { model: 'iPhone 15', marka: 'Apple', adet: 654 },
+    { model: 'P60 Pro', marka: 'Huawei', adet: 432 },
+    { model: 'iPhone 17 Pro', marka: 'Apple', adet: 44 },
+    { model: 'Pixel 8', marka: 'Google', adet: 398 },
+    { model: 'Redmi Note 12', marka: 'Xiaomi', adet: 567 },
+    { model: 'Galaxy A34', marka: 'Samsung', adet: 521 },
+    { model: 'iPhone 14', marka: 'Apple', adet: 345 },
+    { model: 'Find X6', marka: 'Oppo', adet: 189 },
+    { model: 'OnePlus 12', marka: 'OnePlus', adet: 234 },
+    { model: 'Galaxy S23', marka: 'Samsung', adet: 412 },
+    { model: 'Mi 14', marka: 'Xiaomi', adet: 178 },
+    { model: 'iPhone 13', marka: 'Apple', adet: 267 },
+    { model: 'Mate 60', marka: 'Huawei', adet: 156 },
+    { model: 'Nokia G42', marka: 'Nokia', adet: 98 },
+    { model: 'Galaxy Z Flip 5', marka: 'Samsung', adet: 145 },
+    { model: 'iPhone SE 4', marka: 'Apple', adet: 123 },
+  ].sort((a, b) => b.adet - a.adet)
 }

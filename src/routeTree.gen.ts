@@ -10,12 +10,14 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as RaporlarRouteImport } from './routes/raporlar'
+import { Route as MusteriTelefonBilgileriRouteImport } from './routes/musteri-telefon-bilgileri'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as KullanicilarRouteImport } from './routes/kullanicilar'
 import { Route as KisayollarRouteImport } from './routes/kisayollar'
 import { Route as KartlarRouteImport } from './routes/kartlar'
 import { Route as IslemlerRouteImport } from './routes/islemler'
 import { Route as DuyurularRouteImport } from './routes/duyurular'
+import { Route as DijitalBankacilikDashboardRouteImport } from './routes/dijital-bankacilik-dashboard'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as BankacilikLoglariRouteImport } from './routes/bankacilik-loglari'
 import { Route as AyarlarRouteImport } from './routes/ayarlar'
@@ -28,6 +30,11 @@ import { Route as DemoFormAddressRouteImport } from './routes/demo/form.address'
 const RaporlarRoute = RaporlarRouteImport.update({
   id: '/raporlar',
   path: '/raporlar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MusteriTelefonBilgileriRoute = MusteriTelefonBilgileriRouteImport.update({
+  id: '/musteri-telefon-bilgileri',
+  path: '/musteri-telefon-bilgileri',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -60,6 +67,12 @@ const DuyurularRoute = DuyurularRouteImport.update({
   path: '/duyurular',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DijitalBankacilikDashboardRoute =
+  DijitalBankacilikDashboardRouteImport.update({
+    id: '/dijital-bankacilik-dashboard',
+    path: '/dijital-bankacilik-dashboard',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -106,12 +119,14 @@ export interface FileRoutesByFullPath {
   '/ayarlar': typeof AyarlarRoute
   '/bankacilik-loglari': typeof BankacilikLoglariRoute
   '/dashboard': typeof DashboardRoute
+  '/dijital-bankacilik-dashboard': typeof DijitalBankacilikDashboardRoute
   '/duyurular': typeof DuyurularRoute
   '/islemler': typeof IslemlerRoute
   '/kartlar': typeof KartlarRoute
   '/kisayollar': typeof KisayollarRoute
   '/kullanicilar': typeof KullanicilarRoute
   '/login': typeof LoginRoute
+  '/musteri-telefon-bilgileri': typeof MusteriTelefonBilgileriRoute
   '/raporlar': typeof RaporlarRoute
   '/demo/table': typeof DemoTableRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
@@ -123,12 +138,14 @@ export interface FileRoutesByTo {
   '/ayarlar': typeof AyarlarRoute
   '/bankacilik-loglari': typeof BankacilikLoglariRoute
   '/dashboard': typeof DashboardRoute
+  '/dijital-bankacilik-dashboard': typeof DijitalBankacilikDashboardRoute
   '/duyurular': typeof DuyurularRoute
   '/islemler': typeof IslemlerRoute
   '/kartlar': typeof KartlarRoute
   '/kisayollar': typeof KisayollarRoute
   '/kullanicilar': typeof KullanicilarRoute
   '/login': typeof LoginRoute
+  '/musteri-telefon-bilgileri': typeof MusteriTelefonBilgileriRoute
   '/raporlar': typeof RaporlarRoute
   '/demo/table': typeof DemoTableRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
@@ -141,12 +158,14 @@ export interface FileRoutesById {
   '/ayarlar': typeof AyarlarRoute
   '/bankacilik-loglari': typeof BankacilikLoglariRoute
   '/dashboard': typeof DashboardRoute
+  '/dijital-bankacilik-dashboard': typeof DijitalBankacilikDashboardRoute
   '/duyurular': typeof DuyurularRoute
   '/islemler': typeof IslemlerRoute
   '/kartlar': typeof KartlarRoute
   '/kisayollar': typeof KisayollarRoute
   '/kullanicilar': typeof KullanicilarRoute
   '/login': typeof LoginRoute
+  '/musteri-telefon-bilgileri': typeof MusteriTelefonBilgileriRoute
   '/raporlar': typeof RaporlarRoute
   '/demo/table': typeof DemoTableRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
@@ -160,12 +179,14 @@ export interface FileRouteTypes {
     | '/ayarlar'
     | '/bankacilik-loglari'
     | '/dashboard'
+    | '/dijital-bankacilik-dashboard'
     | '/duyurular'
     | '/islemler'
     | '/kartlar'
     | '/kisayollar'
     | '/kullanicilar'
     | '/login'
+    | '/musteri-telefon-bilgileri'
     | '/raporlar'
     | '/demo/table'
     | '/demo/tanstack-query'
@@ -177,12 +198,14 @@ export interface FileRouteTypes {
     | '/ayarlar'
     | '/bankacilik-loglari'
     | '/dashboard'
+    | '/dijital-bankacilik-dashboard'
     | '/duyurular'
     | '/islemler'
     | '/kartlar'
     | '/kisayollar'
     | '/kullanicilar'
     | '/login'
+    | '/musteri-telefon-bilgileri'
     | '/raporlar'
     | '/demo/table'
     | '/demo/tanstack-query'
@@ -194,12 +217,14 @@ export interface FileRouteTypes {
     | '/ayarlar'
     | '/bankacilik-loglari'
     | '/dashboard'
+    | '/dijital-bankacilik-dashboard'
     | '/duyurular'
     | '/islemler'
     | '/kartlar'
     | '/kisayollar'
     | '/kullanicilar'
     | '/login'
+    | '/musteri-telefon-bilgileri'
     | '/raporlar'
     | '/demo/table'
     | '/demo/tanstack-query'
@@ -212,12 +237,14 @@ export interface RootRouteChildren {
   AyarlarRoute: typeof AyarlarRoute
   BankacilikLoglariRoute: typeof BankacilikLoglariRoute
   DashboardRoute: typeof DashboardRoute
+  DijitalBankacilikDashboardRoute: typeof DijitalBankacilikDashboardRoute
   DuyurularRoute: typeof DuyurularRoute
   IslemlerRoute: typeof IslemlerRoute
   KartlarRoute: typeof KartlarRoute
   KisayollarRoute: typeof KisayollarRoute
   KullanicilarRoute: typeof KullanicilarRoute
   LoginRoute: typeof LoginRoute
+  MusteriTelefonBilgileriRoute: typeof MusteriTelefonBilgileriRoute
   RaporlarRoute: typeof RaporlarRoute
   DemoTableRoute: typeof DemoTableRoute
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
@@ -232,6 +259,13 @@ declare module '@tanstack/react-router' {
       path: '/raporlar'
       fullPath: '/raporlar'
       preLoaderRoute: typeof RaporlarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/musteri-telefon-bilgileri': {
+      id: '/musteri-telefon-bilgileri'
+      path: '/musteri-telefon-bilgileri'
+      fullPath: '/musteri-telefon-bilgileri'
+      preLoaderRoute: typeof MusteriTelefonBilgileriRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -274,6 +308,13 @@ declare module '@tanstack/react-router' {
       path: '/duyurular'
       fullPath: '/duyurular'
       preLoaderRoute: typeof DuyurularRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dijital-bankacilik-dashboard': {
+      id: '/dijital-bankacilik-dashboard'
+      path: '/dijital-bankacilik-dashboard'
+      fullPath: '/dijital-bankacilik-dashboard'
+      preLoaderRoute: typeof DijitalBankacilikDashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard': {
@@ -340,12 +381,14 @@ const rootRouteChildren: RootRouteChildren = {
   AyarlarRoute: AyarlarRoute,
   BankacilikLoglariRoute: BankacilikLoglariRoute,
   DashboardRoute: DashboardRoute,
+  DijitalBankacilikDashboardRoute: DijitalBankacilikDashboardRoute,
   DuyurularRoute: DuyurularRoute,
   IslemlerRoute: IslemlerRoute,
   KartlarRoute: KartlarRoute,
   KisayollarRoute: KisayollarRoute,
   KullanicilarRoute: KullanicilarRoute,
   LoginRoute: LoginRoute,
+  MusteriTelefonBilgileriRoute: MusteriTelefonBilgileriRoute,
   RaporlarRoute: RaporlarRoute,
   DemoTableRoute: DemoTableRoute,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,

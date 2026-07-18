@@ -1,5 +1,9 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
+import { protectedRouteOptions } from '#/lib/auth-guard'
+import { TableSkeleton } from '#/components/Skeleton'
+import { RouteErrorComponent } from '#/components/ErrorBoundary'
+import { DataTable } from '#/components/DataTable'
 import {
   ActionIcon,
   Badge,
@@ -8,10 +12,8 @@ import {
   NativeSelect,
   Pagination,
   Paper,
-  ScrollArea,
   SimpleGrid,
   Stack,
-  Table,
   Text,
   TextInput,
   Title,
@@ -19,21 +21,129 @@ import {
 import { DatePickerInput } from '@mantine/dates'
 import { notifications } from '@mantine/notifications'
 import { Download, Filter, Search } from 'lucide-react'
-import { makeBankacilikLoglari } from '#/data/mock-data'
+import { useBankacilikLoglari } from '#/hooks/use-banking'
+import type { ColumnDef } from '@tanstack/react-table'
 import type { BankacilikLog } from '#/data/mock-data'
 
 export const Route = createFileRoute('/islemler')({
+  ...protectedRouteOptions,
+  pendingComponent: () => <TableSkeleton cols={9} />,
+  errorComponent: RouteErrorComponent,
   component: IslemlerPage,
 })
 
 const PAGE_SIZE = 15
 
-function IslemlerPage() {
-  const [islemler] = useState<BankacilikLog[]>(() =>
-    makeBankacilikLoglari(100).sort(
-      (a, b) => b.tarih.getTime() - a.tarih.getTime(),
+const islemTipiLabels: Record<BankacilikLog['islemTipi'], string> = {
+  para_yatirma: 'Para Yatırma',
+  para_cekme: 'Para Çekme',
+  havale: 'Havale',
+  eft: 'EFT',
+  odeme: 'Ödeme',
+  yatirim: 'Yatırım',
+}
+
+const islemTipiColors: Record<BankacilikLog['islemTipi'], string> = {
+  para_yatirma: 'green',
+  para_cekme: 'red',
+  havale: 'blue',
+  eft: 'cyan',
+  odeme: 'yellow',
+  yatirim: 'purple',
+}
+
+function getDurumColor(durum: BankacilikLog['durum']) {
+  switch (durum) {
+    case 'basarili':
+      return 'green'
+    case 'basarisiz':
+      return 'red'
+    case 'beklemede':
+      return 'yellow'
+  }
+}
+
+function getDurumLabel(durum: BankacilikLog['durum']) {
+  switch (durum) {
+    case 'basarili':
+      return 'Başarılı'
+    case 'basarisiz':
+      return 'Başarısız'
+    case 'beklemede':
+      return 'Beklemede'
+  }
+}
+
+const columns: ColumnDef<BankacilikLog, any>[] = [
+  {
+    accessorKey: 'musteriAdi',
+    header: 'Müşteri Adı',
+    cell: ({ row }) => <Text fw={500}>{row.original.musteriAdi}</Text>,
+  },
+  {
+    accessorKey: 'islemTipi',
+    header: 'İşlem Tipi',
+    cell: ({ row }) => (
+      <Badge color={islemTipiColors[row.original.islemTipi]} variant="light">
+        {islemTipiLabels[row.original.islemTipi]}
+      </Badge>
     ),
-  )
+  },
+  {
+    accessorKey: 'tutar',
+    header: 'Tutar',
+    cell: ({ row }) => (
+      <Text fw={500}>{row.original.tutar.toLocaleString('tr-TR')} ₺</Text>
+    ),
+  },
+  {
+    accessorKey: 'tarih',
+    header: 'Tarih',
+    cell: ({ row }) => (
+      <Text size="sm">{row.original.tarih.toLocaleDateString('tr-TR')}</Text>
+    ),
+  },
+  {
+    id: 'saat',
+    header: 'Saat',
+    cell: ({ row }) => (
+      <Text size="sm" c="dimmed">
+        {row.original.tarih.toLocaleTimeString('tr-TR')}
+      </Text>
+    ),
+  },
+  {
+    accessorKey: 'durum',
+    header: 'Durum',
+    cell: ({ row }) => (
+      <Badge color={getDurumColor(row.original.durum)} variant="light">
+        {getDurumLabel(row.original.durum)}
+      </Badge>
+    ),
+  },
+  {
+    accessorKey: 'cihaz',
+    header: 'Cihaz',
+    cell: ({ row }) => <Text size="sm">{row.original.cihaz}</Text>,
+  },
+  {
+    accessorKey: 'konum',
+    header: 'Konum',
+    cell: ({ row }) => <Text size="sm">{row.original.konum}</Text>,
+  },
+  {
+    accessorKey: 'referansNo',
+    header: 'Referans No',
+    cell: ({ row }) => (
+      <Text size="sm" ff="monospace">
+        {row.original.referansNo}
+      </Text>
+    ),
+  },
+]
+
+function IslemlerPage() {
+  const { data: islemler = [] } = useBankacilikLoglari()
   const [searchTerm, setSearchTerm] = useState('')
   const [activePage, setActivePage] = useState(1)
   const [islemTipiFiltre, setIslemTipiFiltre] = useState<string>('hepsi')
@@ -43,6 +153,13 @@ function IslemlerPage() {
     null,
   ])
   const [showFilters, setShowFilters] = useState(false)
+
+  const toggleFilters = useCallback(() => setShowFilters((prev) => !prev), [])
+
+  const handleSearchChange = useCallback((value: string) => {
+    setSearchTerm(value)
+    setActivePage(1)
+  }, [])
 
   const filteredIslemler = useMemo(() => {
     return islemler.filter((islem) => {
@@ -79,53 +196,7 @@ function IslemlerPage() {
     return filteredIslemler.filter((i) => i.durum === 'basarili').length
   }, [filteredIslemler])
 
-  const getIslemTipiLabel = (tip: BankacilikLog['islemTipi']) => {
-    const labels: Record<BankacilikLog['islemTipi'], string> = {
-      para_yatirma: 'Para Yatırma',
-      para_cekme: 'Para Çekme',
-      havale: 'Havale',
-      eft: 'EFT',
-      odeme: 'Ödeme',
-      yatirim: 'Yatırım',
-    }
-    return labels[tip]
-  }
-
-  const getIslemTipiColor = (tip: BankacilikLog['islemTipi']) => {
-    const colors: Record<BankacilikLog['islemTipi'], string> = {
-      para_yatirma: 'green',
-      para_cekme: 'red',
-      havale: 'blue',
-      eft: 'cyan',
-      odeme: 'yellow',
-      yatirim: 'purple',
-    }
-    return colors[tip]
-  }
-
-  const getDurumColor = (durum: BankacilikLog['durum']) => {
-    switch (durum) {
-      case 'basarili':
-        return 'green'
-      case 'basarisiz':
-        return 'red'
-      case 'beklemede':
-        return 'yellow'
-    }
-  }
-
-  const getDurumLabel = (durum: BankacilikLog['durum']) => {
-    switch (durum) {
-      case 'basarili':
-        return 'Başarılı'
-      case 'basarisiz':
-        return 'Başarısız'
-      case 'beklemede':
-        return 'Beklemede'
-    }
-  }
-
-  const handleExportCSV = () => {
+  const handleExportCSV = useCallback(() => {
     const headers = [
       'Müşteri',
       'İşlem Tipi',
@@ -136,7 +207,7 @@ function IslemlerPage() {
     ]
     const rows = filteredIslemler.map((islem) => [
       islem.musteriAdi,
-      getIslemTipiLabel(islem.islemTipi),
+      islemTipiLabels[islem.islemTipi],
       islem.tutar.toFixed(2),
       islem.tarih.toLocaleDateString('tr-TR'),
       getDurumLabel(islem.durum),
@@ -155,7 +226,7 @@ function IslemlerPage() {
       message: `${filteredIslemler.length} işlem CSV olarak indirildi`,
       color: 'green',
     })
-  }
+  }, [filteredIslemler])
 
   return (
     <div className="demo-page-wide">
@@ -180,7 +251,7 @@ function IslemlerPage() {
               variant={showFilters ? 'filled' : 'light'}
               color="green"
               size="lg"
-              onClick={() => setShowFilters(!showFilters)}
+              onClick={toggleFilters}
             >
               <Filter size={20} />
             </ActionIcon>
@@ -224,10 +295,7 @@ function IslemlerPage() {
                 placeholder="Müşteri veya referans no ara..."
                 leftSection={<Search size={16} />}
                 value={searchTerm}
-                onChange={(e) => {
-                  setSearchTerm(e.currentTarget.value)
-                  setActivePage(1)
-                }}
+                onChange={(e) => handleSearchChange(e.currentTarget.value)}
                 w={300}
               />
               <NativeSelect
@@ -281,80 +349,11 @@ function IslemlerPage() {
           </Paper>
         )}
 
-        <ScrollArea>
-          <Table striped highlightOnHover withTableBorder>
-            <Table.Thead>
-              <Table.Tr>
-                <Table.Th>Müşteri Adı</Table.Th>
-                <Table.Th>İşlem Tipi</Table.Th>
-                <Table.Th>Tutar</Table.Th>
-                <Table.Th>Tarih</Table.Th>
-                <Table.Th>Saat</Table.Th>
-                <Table.Th>Durum</Table.Th>
-                <Table.Th>Cihaz</Table.Th>
-                <Table.Th>Konum</Table.Th>
-                <Table.Th>Referans No</Table.Th>
-              </Table.Tr>
-            </Table.Thead>
-            <Table.Tbody>
-              {paginatedIslemler.map((islem) => (
-                <Table.Tr key={islem.id}>
-                  <Table.Td>
-                    <Text fw={500}>{islem.musteriAdi}</Text>
-                  </Table.Td>
-                  <Table.Td>
-                    <Badge
-                      color={getIslemTipiColor(islem.islemTipi)}
-                      variant="light"
-                    >
-                      {getIslemTipiLabel(islem.islemTipi)}
-                    </Badge>
-                  </Table.Td>
-                  <Table.Td>
-                    <Text fw={500}>
-                      {islem.tutar.toLocaleString('tr-TR')} ₺
-                    </Text>
-                  </Table.Td>
-                  <Table.Td>
-                    <Text size="sm">
-                      {islem.tarih.toLocaleDateString('tr-TR')}
-                    </Text>
-                  </Table.Td>
-                  <Table.Td>
-                    <Text size="sm" c="dimmed">
-                      {islem.tarih.toLocaleTimeString('tr-TR')}
-                    </Text>
-                  </Table.Td>
-                  <Table.Td>
-                    <Badge color={getDurumColor(islem.durum)} variant="light">
-                      {getDurumLabel(islem.durum)}
-                    </Badge>
-                  </Table.Td>
-                  <Table.Td>
-                    <Text size="sm">{islem.cihaz}</Text>
-                  </Table.Td>
-                  <Table.Td>
-                    <Text size="sm">{islem.konum}</Text>
-                  </Table.Td>
-                  <Table.Td>
-                    <Text size="sm" ff="monospace">
-                      {islem.referansNo}
-                    </Text>
-                  </Table.Td>
-                </Table.Tr>
-              ))}
-              {paginatedIslemler.length === 0 && (
-                <Table.Tr>
-                  <Table.Td colSpan={9}>
-                    <Text ta="center" c="dimmed" py="xl">
-                      Arama kriterlerinize uygun işlem bulunamadı
-                    </Text>
-                  </Table.Td>
-                </Table.Tr>
-              )}
-            </Table.Tbody>
-          </Table>
-        </ScrollArea>
+        <DataTable
+          data={paginatedIslemler}
+          columns={columns}
+          emptyMessage="Arama kriterlerinize uygun işlem bulunamadı"
+        />
 
         <Group justify="center">
           <Text size="sm" c="dimmed">
