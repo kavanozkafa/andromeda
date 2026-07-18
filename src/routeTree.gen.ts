@@ -9,8 +9,10 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SistemParametreleriRouteImport } from './routes/sistem-parametreleri'
 import { Route as RaporlarRouteImport } from './routes/raporlar'
 import { Route as MusteriTelefonBilgileriRouteImport } from './routes/musteri-telefon-bilgileri'
+import { Route as MesajlarVeEtiketlerRouteImport } from './routes/mesajlar-ve-etiketler'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as KullanicilarRouteImport } from './routes/kullanicilar'
 import { Route as KisayollarRouteImport } from './routes/kisayollar'
@@ -21,12 +23,18 @@ import { Route as DijitalBankacilikDashboardRouteImport } from './routes/dijital
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as BankacilikLoglariRouteImport } from './routes/bankacilik-loglari'
 import { Route as AyarlarRouteImport } from './routes/ayarlar'
+import { Route as AktifKullanicilarRouteImport } from './routes/aktif-kullanicilar'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
 import { Route as DemoTableRouteImport } from './routes/demo/table'
 import { Route as DemoFormSimpleRouteImport } from './routes/demo/form.simple'
 import { Route as DemoFormAddressRouteImport } from './routes/demo/form.address'
 
+const SistemParametreleriRoute = SistemParametreleriRouteImport.update({
+  id: '/sistem-parametreleri',
+  path: '/sistem-parametreleri',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RaporlarRoute = RaporlarRouteImport.update({
   id: '/raporlar',
   path: '/raporlar',
@@ -35,6 +43,11 @@ const RaporlarRoute = RaporlarRouteImport.update({
 const MusteriTelefonBilgileriRoute = MusteriTelefonBilgileriRouteImport.update({
   id: '/musteri-telefon-bilgileri',
   path: '/musteri-telefon-bilgileri',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MesajlarVeEtiketlerRoute = MesajlarVeEtiketlerRouteImport.update({
+  id: '/mesajlar-ve-etiketler',
+  path: '/mesajlar-ve-etiketler',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -88,6 +101,11 @@ const AyarlarRoute = AyarlarRouteImport.update({
   path: '/ayarlar',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AktifKullanicilarRoute = AktifKullanicilarRouteImport.update({
+  id: '/aktif-kullanicilar',
+  path: '/aktif-kullanicilar',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -116,6 +134,7 @@ const DemoFormAddressRoute = DemoFormAddressRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/aktif-kullanicilar': typeof AktifKullanicilarRoute
   '/ayarlar': typeof AyarlarRoute
   '/bankacilik-loglari': typeof BankacilikLoglariRoute
   '/dashboard': typeof DashboardRoute
@@ -126,8 +145,10 @@ export interface FileRoutesByFullPath {
   '/kisayollar': typeof KisayollarRoute
   '/kullanicilar': typeof KullanicilarRoute
   '/login': typeof LoginRoute
+  '/mesajlar-ve-etiketler': typeof MesajlarVeEtiketlerRoute
   '/musteri-telefon-bilgileri': typeof MusteriTelefonBilgileriRoute
   '/raporlar': typeof RaporlarRoute
+  '/sistem-parametreleri': typeof SistemParametreleriRoute
   '/demo/table': typeof DemoTableRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/demo/form/address': typeof DemoFormAddressRoute
@@ -135,6 +156,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/aktif-kullanicilar': typeof AktifKullanicilarRoute
   '/ayarlar': typeof AyarlarRoute
   '/bankacilik-loglari': typeof BankacilikLoglariRoute
   '/dashboard': typeof DashboardRoute
@@ -145,8 +167,10 @@ export interface FileRoutesByTo {
   '/kisayollar': typeof KisayollarRoute
   '/kullanicilar': typeof KullanicilarRoute
   '/login': typeof LoginRoute
+  '/mesajlar-ve-etiketler': typeof MesajlarVeEtiketlerRoute
   '/musteri-telefon-bilgileri': typeof MusteriTelefonBilgileriRoute
   '/raporlar': typeof RaporlarRoute
+  '/sistem-parametreleri': typeof SistemParametreleriRoute
   '/demo/table': typeof DemoTableRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/demo/form/address': typeof DemoFormAddressRoute
@@ -155,6 +179,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/aktif-kullanicilar': typeof AktifKullanicilarRoute
   '/ayarlar': typeof AyarlarRoute
   '/bankacilik-loglari': typeof BankacilikLoglariRoute
   '/dashboard': typeof DashboardRoute
@@ -165,8 +190,10 @@ export interface FileRoutesById {
   '/kisayollar': typeof KisayollarRoute
   '/kullanicilar': typeof KullanicilarRoute
   '/login': typeof LoginRoute
+  '/mesajlar-ve-etiketler': typeof MesajlarVeEtiketlerRoute
   '/musteri-telefon-bilgileri': typeof MusteriTelefonBilgileriRoute
   '/raporlar': typeof RaporlarRoute
+  '/sistem-parametreleri': typeof SistemParametreleriRoute
   '/demo/table': typeof DemoTableRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/demo/form/address': typeof DemoFormAddressRoute
@@ -176,6 +203,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/aktif-kullanicilar'
     | '/ayarlar'
     | '/bankacilik-loglari'
     | '/dashboard'
@@ -186,8 +214,10 @@ export interface FileRouteTypes {
     | '/kisayollar'
     | '/kullanicilar'
     | '/login'
+    | '/mesajlar-ve-etiketler'
     | '/musteri-telefon-bilgileri'
     | '/raporlar'
+    | '/sistem-parametreleri'
     | '/demo/table'
     | '/demo/tanstack-query'
     | '/demo/form/address'
@@ -195,6 +225,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/aktif-kullanicilar'
     | '/ayarlar'
     | '/bankacilik-loglari'
     | '/dashboard'
@@ -205,8 +236,10 @@ export interface FileRouteTypes {
     | '/kisayollar'
     | '/kullanicilar'
     | '/login'
+    | '/mesajlar-ve-etiketler'
     | '/musteri-telefon-bilgileri'
     | '/raporlar'
+    | '/sistem-parametreleri'
     | '/demo/table'
     | '/demo/tanstack-query'
     | '/demo/form/address'
@@ -214,6 +247,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/aktif-kullanicilar'
     | '/ayarlar'
     | '/bankacilik-loglari'
     | '/dashboard'
@@ -224,8 +258,10 @@ export interface FileRouteTypes {
     | '/kisayollar'
     | '/kullanicilar'
     | '/login'
+    | '/mesajlar-ve-etiketler'
     | '/musteri-telefon-bilgileri'
     | '/raporlar'
+    | '/sistem-parametreleri'
     | '/demo/table'
     | '/demo/tanstack-query'
     | '/demo/form/address'
@@ -234,6 +270,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AktifKullanicilarRoute: typeof AktifKullanicilarRoute
   AyarlarRoute: typeof AyarlarRoute
   BankacilikLoglariRoute: typeof BankacilikLoglariRoute
   DashboardRoute: typeof DashboardRoute
@@ -244,8 +281,10 @@ export interface RootRouteChildren {
   KisayollarRoute: typeof KisayollarRoute
   KullanicilarRoute: typeof KullanicilarRoute
   LoginRoute: typeof LoginRoute
+  MesajlarVeEtiketlerRoute: typeof MesajlarVeEtiketlerRoute
   MusteriTelefonBilgileriRoute: typeof MusteriTelefonBilgileriRoute
   RaporlarRoute: typeof RaporlarRoute
+  SistemParametreleriRoute: typeof SistemParametreleriRoute
   DemoTableRoute: typeof DemoTableRoute
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
   DemoFormAddressRoute: typeof DemoFormAddressRoute
@@ -254,6 +293,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sistem-parametreleri': {
+      id: '/sistem-parametreleri'
+      path: '/sistem-parametreleri'
+      fullPath: '/sistem-parametreleri'
+      preLoaderRoute: typeof SistemParametreleriRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/raporlar': {
       id: '/raporlar'
       path: '/raporlar'
@@ -266,6 +312,13 @@ declare module '@tanstack/react-router' {
       path: '/musteri-telefon-bilgileri'
       fullPath: '/musteri-telefon-bilgileri'
       preLoaderRoute: typeof MusteriTelefonBilgileriRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mesajlar-ve-etiketler': {
+      id: '/mesajlar-ve-etiketler'
+      path: '/mesajlar-ve-etiketler'
+      fullPath: '/mesajlar-ve-etiketler'
+      preLoaderRoute: typeof MesajlarVeEtiketlerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -338,6 +391,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AyarlarRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/aktif-kullanicilar': {
+      id: '/aktif-kullanicilar'
+      path: '/aktif-kullanicilar'
+      fullPath: '/aktif-kullanicilar'
+      preLoaderRoute: typeof AktifKullanicilarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -378,6 +438,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AktifKullanicilarRoute: AktifKullanicilarRoute,
   AyarlarRoute: AyarlarRoute,
   BankacilikLoglariRoute: BankacilikLoglariRoute,
   DashboardRoute: DashboardRoute,
@@ -388,8 +449,10 @@ const rootRouteChildren: RootRouteChildren = {
   KisayollarRoute: KisayollarRoute,
   KullanicilarRoute: KullanicilarRoute,
   LoginRoute: LoginRoute,
+  MesajlarVeEtiketlerRoute: MesajlarVeEtiketlerRoute,
   MusteriTelefonBilgileriRoute: MusteriTelefonBilgileriRoute,
   RaporlarRoute: RaporlarRoute,
+  SistemParametreleriRoute: SistemParametreleriRoute,
   DemoTableRoute: DemoTableRoute,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
   DemoFormAddressRoute: DemoFormAddressRoute,

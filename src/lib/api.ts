@@ -5,6 +5,9 @@ import {
   makeKrediKartlari,
   makeLoginKayitlari,
   makeTelefonModelleri,
+  makeAktifOturumlar,
+  makeSistemParametreleri,
+  makeSistemMesajlari,
 } from '#/data/mock-data'
 import type {
   BankacilikLog,
@@ -13,6 +16,9 @@ import type {
   KrediKarti,
   LoginKaydi,
   TelefonModel,
+  AktifOturum,
+  SistemParametresi,
+  SistemMesaji,
 } from '#/data/mock-data'
 
 let dusurularDb = makeDuyurular(20)
@@ -21,6 +27,9 @@ let bankacilikLoglariDb = makeBankacilikLoglari(100)
 let krediKartlariDb = makeKrediKartlari(8)
 let loginKayitlariDb = makeLoginKayitlari(200)
 let telefonModelleriDb = makeTelefonModelleri()
+let aktifOturumlarDb = makeAktifOturumlar(12)
+let sistemParametreleriDb = makeSistemParametreleri()
+let sistemMesajlariDb = makeSistemMesajlari()
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
@@ -101,4 +110,82 @@ export const api = {
       return [...telefonModelleriDb]
     },
   },
+
+  aktifOturumlar: {
+    list: async (): Promise<AktifOturum[]> => {
+      await delay(300)
+      return [...aktifOturumlarDb].sort(
+        (a, b) => b.sonIslemTarihi.getTime() - a.sonIslemTarihi.getTime()
+      )
+    },
+    kick: async (id: string): Promise<void> => {
+      await delay(200)
+      aktifOturumlarDb = aktifOturumlarDb.filter((o) => o.id !== id)
+    },
+  },
+
+  sistemParametreleri: {
+    list: async (): Promise<SistemParametresi[]> => {
+      await delay(300)
+      return [...sistemParametreleriDb]
+    },
+    create: async (data: Omit<SistemParametresi, 'id' | 'guncellemeTarihi'>): Promise<SistemParametresi> => {
+      await delay(200)
+      const yeni: SistemParametresi = {
+        ...data,
+        id: crypto.randomUUID(),
+        guncellemeTarihi: new Date(),
+      }
+      sistemParametreleriDb = [yeni, ...sistemParametreleriDb]
+      return yeni
+    },
+    update: async (id: string, data: Partial<SistemParametresi>): Promise<SistemParametresi> => {
+      await delay(200)
+      const idx = sistemParametreleriDb.findIndex((p) => p.id === id)
+      if (idx === -1) throw new Error('Parametre bulunamadı')
+      sistemParametreleriDb[idx] = {
+        ...sistemParametreleriDb[idx],
+        ...data,
+        guncellemeTarihi: new Date(),
+      }
+      return sistemParametreleriDb[idx]
+    },
+    delete: async (id: string): Promise<void> => {
+      await delay(200)
+      sistemParametreleriDb = sistemParametreleriDb.filter((p) => p.id !== id)
+    },
+  },
+
+  sistemMesajlari: {
+    list: async (): Promise<SistemMesaji[]> => {
+      await delay(300)
+      return [...sistemMesajlariDb]
+    },
+    create: async (data: Omit<SistemMesaji, 'id' | 'guncellemeTarihi'>): Promise<SistemMesaji> => {
+      await delay(200)
+      const yeni: SistemMesaji = {
+        ...data,
+        id: crypto.randomUUID(),
+        guncellemeTarihi: new Date(),
+      }
+      sistemMesajlariDb = [yeni, ...sistemMesajlariDb]
+      return yeni
+    },
+    update: async (id: string, data: Partial<SistemMesaji>): Promise<SistemMesaji> => {
+      await delay(200)
+      const idx = sistemMesajlariDb.findIndex((m) => m.id === id)
+      if (idx === -1) throw new Error('Sistem mesajı bulunamadı')
+      sistemMesajlariDb[idx] = {
+        ...sistemMesajlariDb[idx],
+        ...data,
+        guncellemeTarihi: new Date(),
+      }
+      return sistemMesajlariDb[idx]
+    },
+    delete: async (id: string): Promise<void> => {
+      await delay(200)
+      sistemMesajlariDb = sistemMesajlariDb.filter((m) => m.id !== id)
+    },
+  },
 }
+

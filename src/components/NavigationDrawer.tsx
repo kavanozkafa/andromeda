@@ -13,6 +13,9 @@ import {
   Smartphone,
   Sparkles,
   Users,
+  UserCheck,
+  Sliders,
+  MessageSquare,
 } from 'lucide-react'
 
 interface NavigationDrawerProps {
@@ -153,6 +156,45 @@ export default function NavigationDrawer({
             </ThemeIcon>
           }
           onClick={() => handleNavigate('/musteri-telefon-bilgileri')}
+          variant="subtle"
+          w="100%"
+          style={{ justifyContent: 'center' }}
+        />
+        <NavLink
+          label="Aktif Kullanıcılar"
+          description="Anlık aktif kullanıcı oturumları"
+          leftSection={
+            <ThemeIcon variant="light" color="green" size="lg">
+              <UserCheck size={20} />
+            </ThemeIcon>
+          }
+          onClick={() => handleNavigate('/aktif-kullanicilar')}
+          variant="subtle"
+          w="100%"
+          style={{ justifyContent: 'center' }}
+        />
+        <NavLink
+          label="Sistem Parametreleri"
+          description="Uygulama limitleri ve genel ayarlar"
+          leftSection={
+            <ThemeIcon variant="light" color="green" size="lg">
+              <Sliders size={20} />
+            </ThemeIcon>
+          }
+          onClick={() => handleNavigate('/sistem-parametreleri')}
+          variant="subtle"
+          w="100%"
+          style={{ justifyContent: 'center' }}
+        />
+        <NavLink
+          label="Sistem Mesajları ve Etiketler"
+          description="Hata kodları ve arayüz etiketleri"
+          leftSection={
+            <ThemeIcon variant="light" color="green" size="lg">
+              <MessageSquare size={20} />
+            </ThemeIcon>
+          }
+          onClick={() => handleNavigate('/mesajlar-ve-etiketler')}
           variant="subtle"
           w="100%"
           style={{ justifyContent: 'center' }}

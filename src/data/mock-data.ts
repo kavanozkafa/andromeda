@@ -391,3 +391,212 @@ export function makeTelefonModelleri(): TelefonModel[] {
     { model: 'iPhone SE 4', marka: 'Apple', adet: 123 },
   ].sort((a, b) => b.adet - a.adet)
 }
+
+export interface AktifOturum {
+  id: string
+  adSoyad: string
+  kullaniciAdi: string
+  email: string
+  bakiye: number
+  cihaz: string
+  ipAdresi: string
+  konum: string
+  girisTarihi: Date
+  sonIslemTarihi: Date
+  aktifSayfa: string
+}
+
+export function makeAktifOturumlar(count: number = 8): AktifOturum[] {
+  const cihazlar = [
+    'iPhone 15 Pro',
+    'Samsung Galaxy S24',
+    'MacBook Pro',
+    'Web Tarayıcı - Chrome',
+    'Web Tarayıcı - Safari',
+    'Android Tablet',
+  ]
+  const konumlar = ['İstanbul', 'Ankara', 'İzmir', 'Bursa', 'Antalya', 'Kocaeli']
+  const sayfalar = [
+    '/dashboard',
+    '/islemler',
+    '/kartlar',
+    '/ayarlar',
+    '/raporlar',
+    '/dijital-bankacilik-dashboard',
+  ]
+
+  return Array.from({ length: count }, () => {
+    const adSoyad = faker.person.fullName()
+    const firstName = adSoyad.split(' ')[0].toLowerCase()
+    const lastName = (adSoyad.split(' ')[1] || '').toLowerCase()
+    const kullaniciAdi = `${firstName}.${lastName}`
+    const email = faker.internet.email({ firstName, lastName })
+    const girisTarihi = faker.date.recent({ days: 1 })
+    const sonIslemTarihi = new Date(
+      girisTarihi.getTime() + faker.number.int({ min: 1000 * 60, max: 1000 * 60 * 60 * 3 }),
+    )
+
+    return {
+      id: faker.string.uuid(),
+      adSoyad,
+      kullaniciAdi,
+      email,
+      bakiye: Number(faker.finance.amount({ min: 500, max: 250000 })),
+      cihaz: faker.helpers.arrayElement(cihazlar),
+      ipAdresi: faker.internet.ip(),
+      konum: faker.helpers.arrayElement(konumlar),
+      girisTarihi,
+      sonIslemTarihi,
+      aktifSayfa: faker.helpers.arrayElement(sayfalar),
+    }
+  })
+}
+
+export interface SistemParametresi {
+  id: string
+  anahtar: string
+  deger: string
+  tip: 'boolean' | 'number' | 'string'
+  aciklama: string
+  grup: 'limit' | 'guvenlik' | 'genel'
+  guncellemeTarihi: Date
+}
+
+export function makeSistemParametreleri(): SistemParametresi[] {
+  return [
+    {
+      id: '1',
+      anahtar: 'MAX_DAILY_EFT_LIMIT',
+      deger: '250000',
+      tip: 'number',
+      aciklama: 'Günlük maksimum EFT transfer limiti (TL)',
+      grup: 'limit',
+      guncellemeTarihi: new Date(),
+    },
+    {
+      id: '2',
+      anahtar: 'MAX_DAILY_FAST_LIMIT',
+      deger: '50000',
+      tip: 'number',
+      aciklama: 'Günlük maksimum FAST transfer limiti (TL)',
+      grup: 'limit',
+      guncellemeTarihi: new Date(),
+    },
+    {
+      id: '3',
+      anahtar: 'SESSION_TIMEOUT_MINUTES',
+      deger: '15',
+      tip: 'number',
+      aciklama: 'Oturum zaman aşımı süresi (dakika)',
+      grup: 'guvenlik',
+      guncellemeTarihi: new Date(),
+    },
+    {
+      id: '4',
+      anahtar: 'PASSWORD_MIN_LENGTH',
+      deger: '8',
+      tip: 'number',
+      aciklama: 'Minimum şifre uzunluğu',
+      grup: 'guvenlik',
+      guncellemeTarihi: new Date(),
+    },
+    {
+      id: '5',
+      anahtar: 'MAINTENANCE_MODE',
+      deger: 'false',
+      tip: 'boolean',
+      aciklama: 'Sistem bakım modu durumu (true/false)',
+      grup: 'genel',
+      guncellemeTarihi: new Date(),
+    },
+    {
+      id: '6',
+      anahtar: 'SMS_OTP_EXPIRE_SECONDS',
+      deger: '180',
+      tip: 'number',
+      aciklama: 'SMS tek kullanımlık şifre geçerlilik süresi (saniye)',
+      grup: 'guvenlik',
+      guncellemeTarihi: new Date(),
+    },
+    {
+      id: '7',
+      anahtar: 'BANK_ROUTING_CODE',
+      deger: '0099',
+      tip: 'string',
+      aciklama: 'Andromeda Banka yönlendirme kodu',
+      grup: 'genel',
+      guncellemeTarihi: new Date(),
+    },
+  ]
+}
+
+export interface SistemMesaji {
+  id: string
+  kod: string
+  tur: 'hata' | 'uyari' | 'etiket' | 'mesaj'
+  deger: string
+  aciklama: string
+  guncellemeTarihi: Date
+}
+
+export function makeSistemMesajlari(): SistemMesaji[] {
+  return [
+    {
+      id: '1',
+      kod: 'ERR_INSUFFICIENT_FUNDS',
+      tur: 'hata',
+      deger: 'Hesabınızda bu işlem için yeterli bakiye bulunmamaktadır.',
+      aciklama: 'Yetersiz bakiye durumunda gösterilen hata mesajı',
+      guncellemeTarihi: new Date(),
+    },
+    {
+      id: '2',
+      kod: 'ERR_INVALID_PASSWORD',
+      tur: 'hata',
+      deger: 'Girdiğiniz şifre hatalıdır. Lütfen tekrar deneyiniz.',
+      aciklama: 'Hatalı şifre denemelerinde gösterilen hata mesajı',
+      guncellemeTarihi: new Date(),
+    },
+    {
+      id: '3',
+      kod: 'WARN_SESSION_EXPIRING',
+      tur: 'uyari',
+      deger: 'Oturumunuz güvenlik nedeniyle 2 dakika içinde sonlandırılacaktır.',
+      aciklama: 'Zaman aşımından hemen önce gösterilen uyarı mesajı',
+      guncellemeTarihi: new Date(),
+    },
+    {
+      id: '4',
+      kod: 'LBL_WELCOME_BACK',
+      tur: 'etiket',
+      deger: 'Tekrar Hoş Geldiniz',
+      aciklama: 'Giriş yapan kullanıcılara gösterilen karşılama etiketi',
+      guncellemeTarihi: new Date(),
+    },
+    {
+      id: '5',
+      kod: 'MSG_PASSWORD_CHANGED',
+      tur: 'mesaj',
+      deger: 'Şifreniz başarıyla güncellenmiştir.',
+      aciklama: 'Şifre güncelleme işlemi tamamlandığında gösterilen bilgi mesajı',
+      guncellemeTarihi: new Date(),
+    },
+    {
+      id: '6',
+      kod: 'ERR_LIMIT_EXCEEDED',
+      tur: 'hata',
+      deger: 'İşlem tutarı günlük transfer limitinizi aşmaktadır.',
+      aciklama: 'Günlük limit aşımında gösterilen hata mesajı',
+      guncellemeTarihi: new Date(),
+    },
+    {
+      id: '7',
+      kod: 'LBL_CARD_STATUS_ACTIVE',
+      tur: 'etiket',
+      deger: 'Kullanıma Açık / Aktif',
+      aciklama: 'Aktif kartların durum etiketinde gösterilen metin',
+      guncellemeTarihi: new Date(),
+    },
+  ]
+}
+

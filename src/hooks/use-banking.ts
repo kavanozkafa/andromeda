@@ -137,3 +137,142 @@ export function useTelefonModelleri() {
     queryFn: api.telefonModelleri.list,
   })
 }
+
+export function useAktifOturumlar() {
+  return useQuery({
+    queryKey: ['aktif-oturumlar'],
+    queryFn: api.aktifOturumlar.list,
+  })
+}
+
+export function useAktifOturumKick() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: api.aktifOturumlar.kick,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['aktif-oturumlar'] })
+      notifications.show({
+        title: 'Oturum Kapatıldı',
+        message: 'Kullanıcı oturumu başarıyla sonlandırıldı',
+        color: 'green',
+      })
+    },
+  })
+}
+
+export function useSistemParametreleri() {
+  return useQuery({
+    queryKey: ['sistem-parametreleri'],
+    queryFn: api.sistemParametreleri.list,
+  })
+}
+
+export function useSistemParametreCreate() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: api.sistemParametreleri.create,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['sistem-parametreleri'] })
+      notifications.show({
+        title: 'Başarılı',
+        message: 'Sistem parametresi eklendi',
+        color: 'green',
+      })
+    },
+  })
+}
+
+export function useSistemParametreUpdate() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: ({
+      id,
+      data,
+    }: {
+      id: string
+      data: Parameters<typeof api.sistemParametreleri.update>[1]
+    }) => api.sistemParametreleri.update(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['sistem-parametreleri'] })
+      notifications.show({
+        title: 'Başarılı',
+        message: 'Sistem parametresi güncellendi',
+        color: 'green',
+      })
+    },
+  })
+}
+
+export function useSistemParametreDelete() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: api.sistemParametreleri.delete,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['sistem-parametreleri'] })
+      notifications.show({
+        title: 'Başarılı',
+        message: 'Sistem parametresi silindi',
+        color: 'green',
+      })
+    },
+  })
+}
+
+export function useSistemMesajlari() {
+  return useQuery({
+    queryKey: ['sistem-mesajlari'],
+    queryFn: api.sistemMesajlari.list,
+  })
+}
+
+export function useSistemMesajiCreate() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: api.sistemMesajlari.create,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['sistem-mesajlari'] })
+      notifications.show({
+        title: 'Başarılı',
+        message: 'Sistem mesajı/etiketi eklendi',
+        color: 'green',
+      })
+    },
+  })
+}
+
+export function useSistemMesajiUpdate() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: ({
+      id,
+      data,
+    }: {
+      id: string
+      data: Parameters<typeof api.sistemMesajlari.update>[1]
+    }) => api.sistemMesajlari.update(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['sistem-mesajlari'] })
+      notifications.show({
+        title: 'Başarılı',
+        message: 'Sistem mesajı/etiketi güncellendi',
+        color: 'green',
+      })
+    },
+  })
+}
+
+export function useSistemMesajiDelete() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: api.sistemMesajlari.delete,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['sistem-mesajlari'] })
+      notifications.show({
+        title: 'Başarılı',
+        message: 'Sistem mesajı/etiketi silindi',
+        color: 'green',
+      })
+    },
+  })
+}
+
